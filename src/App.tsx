@@ -84,7 +84,7 @@ import {
   ShieldAlert
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Capacitor } from '@capacitor/core';
+import { Capacitor, CapacitorHttp } from '@capacitor/core';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Toast } from '@capacitor/toast';
 import { 
@@ -121,7 +121,22 @@ import {
   onAuthStateChanged, 
   signOut 
 } from '@/src/lib/firebase';
-import { Capacitor, CapacitorHttp } from '@capacitor/core';
+import { Device } from '@capacitor/device';
+import { Preferences } from '@capacitor/preferences';
+
+// --- Constants ---
+/** 
+ * تنبيه هام للمستخدم:
+ * الرابط أدناه هو رابط "ملف الجدول"، وهذا لا يعمل كنقطة اتصال (API).
+ * يجب عليك:
+ * 1. فتح ملف جوجل شيت الخاص بك.
+ * 2. الذهاب إلى Extensions -> Apps Script.
+ * 3. لصق الكود الذي أرسلته لي هناك.
+ * 4. الضغط على Deploy -> New Deployment -> Web App.
+ * 5. جعل الـ Access: "Anyone".
+ * 6. نسخ "Web App URL" ووضعه في ملف server.ts في مسار /api/auth/sheets.
+ */
+const SHEETS_AUTH_API_URL = '/api/auth/sheets'; 
 
 // --- API Helpers ---
 const API_BASE_URL = import.meta.env.VITE_API_URL || '';
@@ -1627,6 +1642,29 @@ const INITIAL_STATE: AppState = {
 };
 
 export default function App() {
+  const [deviceId, setDeviceId] = useState<string>('');
+  const [isLoginLoading, setIsLoginLoading] = useState(false);
+
+  useEffect(() => {
+    const initDevice = async () => {
+      try {
+        const info = await Device.getId();
+        setDeviceId(info.identifier);
+        console.log("Device ID loaded:", info.identifier);
+
+        // Check for existing session
+        const { value: isAuth } = await Preferences.get({ key: 'poultry_sheets_authenticated' });
+        if (isAuth === 'true') {
+          sessionStorage.setItem('poultry_gateway_passed', 'true');
+          setScreen('landing');
+        }
+      } catch (err) {
+        console.error("Error initializing device/session:", err);
+      }
+    };
+    initDevice();
+  }, []);
+
   const [screen, setScreen] = useState<Screen>(() => {
     const saved = localStorage.getItem('poultry_app_screen');
     // If user has already passed the gateway check in this session, we can restore.
@@ -2791,57 +2829,114 @@ export default function App() {
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const email = loginEmail;
-    const password = loginPassword;
+    if (!SHEETS_AUTH_API_URL) {
+      alert("عذراً، نظام الأمان غير مفعل بالكامل. يرجى مراجعة المطور.");
+      return;
+    }
+
+    setIsLoginLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      
-      if (rememberMeLogin) {
-        localStorage.setItem('poultry_login_credentials', JSON.stringify({ email, password }));
-      } else {
-        localStorage.removeItem('poultry_login_credentials');
+      const response = await smartFetch(SHEETS_AUTH_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: loginEmail,
+          password: loginPassword,
+          deviceId: deviceId
+        })
+      });
+
+      let result;
+      try {
+        result = await response.json();
+      } catch (e) {
+        throw new Error("الرابط الذي قدمته لا يرجع بيانات JSON صحيحة. تأكد من أنك قمت بعمل Deploy للكود كـ Web App وليس مجرد مشاركة الرابط.");
       }
-      
-      setScreen('landing');
+
+      if (result.status === 'success') {
+        // Save session
+        await Preferences.set({
+          key: 'poultry_sheets_authenticated',
+          value: 'true'
+        });
+        
+        if (rememberMeLogin) {
+          localStorage.setItem('poultry_login_credentials', JSON.stringify({ 
+            email: loginEmail, 
+            password: loginPassword 
+          }));
+        }
+
+        sessionStorage.setItem('poultry_gateway_passed', 'true');
+        setScreen('landing');
+        alert("تم تسجيل الدخول بنجاح!");
+      } else {
+        alert(result.message || "فشل تسجيل الدخول. تأكد من البيانات أو من صلاحية الجهاز.");
+      }
     } catch (error: any) {
-      alert(`حدث خطأ أثناء تسجيل الدخول: ${error.message}`);
+      console.error("Sheets Login Error:", error);
+      alert(`حدث خطأ أثناء الاتصال بنظام الأمان: ${error.message}`);
+    } finally {
+      setIsLoginLoading(false);
     }
   };
 
-  const handleGatewayLogin = (e?: React.FormEvent) => {
+  const handleGatewayLogin = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     
-    // قاعدة البيانات الداخلية (أوف لاين)
-    const usersDatabase = [
-      { user: "mohamed.gemy84@yahoo.com", pass: "250226#@koko" },
-      { user: "Moh.gem9898@gmail.com", pass: "25260257" },
-      { user: "smartpoultry1@manager.com", pass: "2026" },
-      { user: "smartpoultry2@manager.com", pass: "P poultry@2026" },
-      { user: "smartpoultry3@manager.com", pass: "M ngr_P3!78" },
-      { user: "smartpoultry4@manager.com", pass: "S mart#P499" },
-      { user: "smartpoultry5@manager.com", pass: "P ass_5Poultry" },
-      { user: "smartpoultry6@manager.com", pass: "M ngr*6677!" },
-      { user: "smartpoultry7@manager.com", pass: "S poultry_7X" },
-      { user: "smartpoultry8@manager.com", pass: "P @ss8_Smart" },
-      { user: "smartpoultry9@manager.com", pass: "M 9_Manager#" },
-      { user: "smartpoultry10@manager.com", pass: "S P10_Secure!" },
-      { user: "smartpoultry11@manager.com", pass: "M gr_11*Poultry" }
-    ];
+    if (!SHEETS_AUTH_API_URL) {
+      alert("عذراً، نظام الأمان غير مفعل بالكامل. يرجى مراجعة المطور.");
+      return;
+    }
 
-    const userFound = usersDatabase.find(
-      (u) => u.user.toLowerCase() === gatewayEmail.trim().toLowerCase() && u.pass === gatewayPassword
-    );
+    setIsLoginLoading(true);
+    try {
+      const response = await smartFetch(SHEETS_AUTH_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: gatewayEmail,
+          password: gatewayPassword,
+          deviceId: deviceId
+        })
+      });
 
-    if (userFound) {
-      if (rememberMeGateway) {
-        localStorage.setItem('poultry_gateway_credentials', JSON.stringify({ email: gatewayEmail, password: gatewayPassword }));
-      } else {
-        localStorage.removeItem('poultry_gateway_credentials');
+      let result;
+      try {
+        result = await response.json();
+      } catch (e) {
+        throw new Error("الرابط لا يرجع JSON. تأكد من إعدادات الـ Deployment (Set access to 'Anyone').");
       }
-      sessionStorage.setItem('poultry_gateway_passed', 'true');
-      setScreen('landing');
-    } else {
-      alert("اسم المستخدم أو كلمة المرور غير صحيحة.");
+
+      if (result.status === 'success') {
+        // Save session
+        await Preferences.set({
+          key: 'poultry_sheets_authenticated',
+          value: 'true'
+        });
+        
+        if (rememberMeGateway) {
+          localStorage.setItem('poultry_gateway_credentials', JSON.stringify({ 
+            email: gatewayEmail, 
+            password: gatewayPassword 
+          }));
+        }
+
+        sessionStorage.setItem('poultry_gateway_passed', 'true');
+        setScreen('landing');
+        alert("تم التصريح بالدخول بنجاح!");
+      } else {
+        alert(result.message || "فشل التصريح. تأكد من البيانات أو من صلاحية الجهاز.");
+      }
+    } catch (error: any) {
+      console.error("Sheets Gateway Error:", error);
+      alert(`حدث خطأ أثناء الاتصال بنظام الأمان: ${error.message}`);
+    } finally {
+      setIsLoginLoading(false);
     }
   };
 
@@ -2852,6 +2947,7 @@ export default function App() {
   const confirmLogout = () => {
     sessionStorage.removeItem('poultry_gateway_passed');
     localStorage.removeItem('poultry_app_screen');
+    Preferences.remove({ key: 'poultry_sheets_authenticated' });
     signOut(auth).catch(() => {});
     
     // Clear states if not remembered
@@ -4573,6 +4669,12 @@ export default function App() {
                 className="w-full bg-slate-900 border-2 border-white/5 rounded-xl px-4 py-4 focus:border-blue-600 focus:outline-none font-bold text-white transition-all"
               />
               
+              <div className="flex flex-col items-center gap-2">
+                <div className="text-[10px] text-slate-500 font-mono text-center opacity-70 bg-slate-900/50 px-2 py-1 rounded border border-white/5">
+                  ID: {deviceId || 'جاري التحميل...'}
+                </div>
+              </div>
+
               <label className="flex items-center gap-3 cursor-pointer group select-none">
                 <div className="relative">
                   <input 
@@ -4595,21 +4697,22 @@ export default function App() {
                 <span className="text-sm font-bold text-slate-400 group-hover:text-slate-300 transition-colors">تذكر بياناتي</span>
               </label>
 
-              <div className="flex gap-2">
-                <button 
-                  type="submit"
-                  className="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-black py-4 rounded-xl shadow-lg shadow-blue-600/20 transition-all"
-                >
-                  دخول
-                </button>
-                <button 
-                  type="button"
-                  onClick={handleEmailRegister}
-                  className="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-black py-4 rounded-xl transition-all"
-                >
-                  إنشاء حساب
-                </button>
-              </div>
+              <motion.button 
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                disabled={isLoginLoading}
+                type="submit"
+                className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-blue-800 disabled:opacity-50 text-white font-black py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-3"
+              >
+                {isLoginLoading ? (
+                  <RefreshCw size={20} className="animate-spin" />
+                ) : (
+                  <>
+                    <ShieldCheck size={20} />
+                    دخول آمن
+                  </>
+                )}
+              </motion.button>
             </form>
 
             <div className="relative flex items-center gap-4 py-2">

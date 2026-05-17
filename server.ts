@@ -2,10 +2,9 @@ import express from "express";
 import cors from "cors";
 import { createServer as createViteServer } from "vite";
 import path from "path";
-import { fileURLToPath } from "url";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Get the directory name for serving static files
+const getDistPath = () => path.join(process.cwd(), 'www');
 
 async function startServer() {
   const app = express();
@@ -14,6 +13,28 @@ async function startServer() {
   // Enable CORS for mobile apps
   app.use(cors());
   app.use(express.json());
+
+  // API Route to proxy Google Sheets Auth (CORS workaround)
+  app.post("/api/auth/sheets", async (req, res) => {
+    const SHEETS_AUTH_API_URL = 'https://script.google.com/macros/s/AKfycbxoLGuNK5SEYDXtopHMQ2FsmV1ligMUtMFEMnSsy-h9kxII-GnlldCs6Vcy2mHkaFoi/exec';
+    
+    try {
+      console.log(`[API] Proxying Sheets Auth for ${req.body.email}`);
+      const response = await fetch(SHEETS_AUTH_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(req.body)
+      });
+
+      const data = await response.json();
+      res.json(data);
+    } catch (error) {
+      console.error("[API Error] Sheets Auth Proxy failed:", error);
+      res.status(500).json({ status: 'error', message: "Internal server error connecting to security system." });
+    }
+  });
 
   // API Route to fetch poultry price
   app.get("/api/poultry-price", async (req, res) => {
