@@ -123,6 +123,7 @@ import {
 } from '@/src/lib/firebase';
 import { Device } from '@capacitor/device';
 import { Preferences } from '@capacitor/preferences';
+import * as Application from 'expo-application';
 
 // --- Constants ---
 /** 
@@ -1648,9 +1649,28 @@ export default function App() {
   useEffect(() => {
     const initDevice = async () => {
       try {
-        const info = await Device.getId();
-        setDeviceId(info.identifier);
-        console.log("Device ID loaded:", info.identifier);
+        let identifier = '';
+        
+        if (Capacitor.isNativePlatform()) {
+          try {
+            if (Capacitor.getPlatform() === 'android') {
+              // @ts-ignore - expo-application might have different typing in latest versions
+              identifier = Application.getAndroidId?.() || Application.androidId || '';
+            } else if (Capacitor.getPlatform() === 'ios') {
+              identifier = await Application.getIosIdForVendorAsync() || '';
+            }
+          } catch (e) {
+            console.warn("Expo Application ID failed, falling back to Capacitor Device ID", e);
+          }
+        }
+
+        if (!identifier) {
+          const info = await Device.getId();
+          identifier = info.identifier;
+        }
+
+        setDeviceId(identifier);
+        console.log("Device ID loaded:", identifier);
 
         // Check for existing session
         const { value: isAuth } = await Preferences.get({ key: 'poultry_sheets_authenticated' });
