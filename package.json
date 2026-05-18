@@ -12,7 +12,7 @@
     "cap:sync": "npx cap sync",
     "cap:add:android": "npx cap add android",
     "build:android": "npm run build && npx cap add android || true && npx cap sync android",
-    "clean": "rm -rf www dist android/build ios/build",
+    "clean": "rm -rf dist android/build ios/build",
     "dev:server": "tsx server.ts"
   },
   "dependencies": {

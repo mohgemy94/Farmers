@@ -1,22 +1,23 @@
 import express from "express";
 import cors from "cors";
-import { createServer as createViteServer } from "vite";
 import path from "path";
-
-// Get the directory name for serving static files
-const getDistPath = () => path.join(process.cwd(), 'www');
 
 async function startServer() {
   const app = express();
   const PORT = 3000;
 
-  // Enable CORS for mobile apps
+  // Enable CORS
   app.use(cors());
   app.use(express.json());
 
+  // Health check
+  app.get("/api/health", (req, res) => {
+    res.json({ status: "ok" });
+  });
+
   // API Route to proxy Google Sheets Auth (CORS workaround)
   app.post("/api/auth/sheets", async (req, res) => {
-    const SHEETS_AUTH_API_URL = 'https://script.google.com/macros/s/AKfycbxoLGuNK5SEYDXtopHMQ2FsmV1ligMUtMFEMnSsy-h9kxII-GnlldCs6Vcy2mHkaFoi/exec';
+    const SHEETS_AUTH_API_URL = 'https://script.google.com/macros/s/AKfycbx_PMN2dTf_phtAptmfIxg4tBj4BkUFWJQHCKt50Lz0vYbVJ1GheIFatBaa1vokiS1P/exec';
     
     try {
       console.log(`[API] Proxying Sheets Auth for ${req.body.email}`);
@@ -109,7 +110,7 @@ async function startServer() {
         return null;
       };
 
-      // Try top 4 sources in parallel first (they are usually the most reliable)
+      // Try top 4 sources in parallel first
       const results = await Promise.all(sources.slice(0, 4).map(fetchWithTimeout));
       const successfulResult = results.find(r => r !== null);
       
@@ -169,7 +170,7 @@ async function startServer() {
     }
   });
 
-  // API Route to fetch gold price (Egypt focus)
+  // API Route to fetch gold price
   app.get("/api/gold-price", async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     try {
@@ -183,7 +184,6 @@ async function startServer() {
         'https://misr365.com/price/gold-price-today/'
       ];
 
-      // Patterns for 21k gold in Egypt (most common)
       const patterns21k = [
         /عيار 21.*?(\d{3,4})/,
         /21k.*?(\d{3,4})/,
@@ -242,7 +242,6 @@ async function startServer() {
         return null;
       };
 
-      // Try top 3 sources in parallel
       const results = await Promise.all(sources.slice(0, 3).map(fetchGoldWithTimeout));
       const successfulResult = results.find(r => r !== null);
       
@@ -250,7 +249,6 @@ async function startServer() {
         return res.json(successfulResult);
       }
 
-      // Try the rest
       const remainingResults = await Promise.all(sources.slice(3).map(fetchGoldWithTimeout));
       const remainingSuccessfulResult = remainingResults.find(r => r !== null);
 
@@ -258,11 +256,9 @@ async function startServer() {
         return res.json(remainingSuccessfulResult);
       }
 
-      // Fallback
       res.json({ 
         prices: { '21k': 6900, '24k': 7886, '18k': 5914 }, 
-        source: "fallback",
-        note: "Fallback due to live fetch failure"
+        source: "fallback"
       });
     } catch (error) {
       console.error("[API Error] Gold price fetch failed:", error);
@@ -270,20 +266,21 @@ async function startServer() {
     }
   });
 
-  // Catch-all for unknown API routes to prevent Vite HTML fallback
+  // Catch-all for unknown API routes
   app.all("/api/*", (req, res) => {
     res.status(404).json({ error: `API route not found: ${req.originalUrl}` });
   });
 
   // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {
+    const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
     });
     app.use(vite.middlewares);
   } else {
-    const distPath = path.join(process.cwd(), 'www');
+    const distPath = path.join(process.cwd(), 'dist');
     app.use(express.static(distPath));
     app.get('*', (req, res) => {
       res.sendFile(path.join(distPath, 'index.html'));
@@ -295,4 +292,7 @@ async function startServer() {
   });
 }
 
-startServer();
+startServer().catch((err) => {
+  console.error("Failed to start server:", err);
+  process.exit(1);
+});
