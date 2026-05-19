@@ -137,23 +137,26 @@ import { Preferences } from '@capacitor/preferences';
  * 5. جعل الـ Access: "Anyone".
  * 6. نسخ "Web App URL" ووضعه في ملف server.ts في مسار /api/auth/sheets.
  */
-const SHEETS_AUTH_API_URL = 'https://script.google.com/macros/s/AKfycbxuw0gn4MuXwbEilZj2IRIf4K7IxC9QH2RUc0lLhHVxAiGiE_3lHfHlILkqqZi6sVYI/exec'; 
+const SHEETS_AUTH_API_URL = 'https://script.google.com/macros/s/AKfycbw6korqk5leXYwXZP82Ov6-QueZiD2QL1-vIT5-JPO9ZwoFVeWWfFN1gundgFdBTcjE/exec'; 
 
 // --- API Helpers ---
-const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbxuw0gn4MuXwbEilZj2IRIf4K7IxC9QH2RUc0lLhHVxAiGiE_3lHfHlILkqqZi6sVYI/exec';
+const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbw6korqk5leXYwXZP82Ov6-QueZiD2QL1-vIT5-JPO9ZwoFVeWWfFN1gundgFdBTcjE/exec';
 
 const smartFetch = async (url: string, options: any = {}) => {
   // Ensure we have a full URL
   let targetUrl = url;
   if (!url.startsWith('http')) {
-    // If it's a relative URL, we either prefix with API_BASE_URL or use it as is if it's already the full URL
-    // Since API_BASE_URL is now fixed to the GAS URL, we'll use it carefully.
-    targetUrl = API_BASE_URL;
-    // We could append the original relative URL as an action parameter if needed, 
-    // but the user's GAS script usually distinguishes by the POST body content.
-    if (url !== SHEETS_AUTH_API_URL && url !== '/api/auth/sheets') {
-      const separator = targetUrl.includes('?') ? '&' : '?';
-      targetUrl = `${targetUrl}${separator}route=${encodeURIComponent(url)}`;
+    if (Capacitor.isNativePlatform()) {
+      // On APK, we must use the hardcoded GAS URL because we don't have a local Express server
+      targetUrl = API_BASE_URL;
+      if (url !== SHEETS_AUTH_API_URL && url !== '/api/auth/sheets') {
+        const separator = targetUrl.includes('?') ? '&' : '?';
+        targetUrl = `${targetUrl}${separator}route=${encodeURIComponent(url)}`;
+      }
+    } else {
+      // In the browser (Web Preview), use the local Express server directly
+      // This is more reliable and avoids CORS issues with Google Script
+      targetUrl = url.startsWith('/') ? url : `/${url}`;
     }
   }
   
@@ -2071,7 +2074,7 @@ export default function App() {
       }
 
       try {
-        const curRes = await smartFetch(`${API_BASE_URL}/api/currency-rates`);
+        const curRes = await smartFetch('/api/currency-rates');
         if (curRes.ok) {
           const curData = await curRes.json();
           setExchangeRates((prev: any) => ({ ...curData.rates, ...prev }));
@@ -2079,7 +2082,7 @@ export default function App() {
       } catch (e) { console.warn("Currency API failed"); }
 
       if (Object.keys(sheetGoldPrices).length === 0 || Object.values(sheetGoldPrices).every((v: any) => v.sell === 0)) {
-        const goldRes = await smartFetch(`${API_BASE_URL}/api/gold-price`);
+        const goldRes = await smartFetch('/api/gold-price');
         if (goldRes.ok) {
           const goldData = await goldRes.json();
           const p = goldData.prices || {};
@@ -2330,8 +2333,7 @@ export default function App() {
     // 2. Fallback if sheet fails or data not found
     if (!success) {
       try {
-        const fetchUrl = `${API_BASE_URL}/api/poultry-price`;
-        const response = await smartFetch(fetchUrl, {
+        const response = await smartFetch('/api/poultry-price', {
           headers: {
             'Accept': 'application/json'
           }
@@ -2837,11 +2839,11 @@ export default function App() {
     e.preventDefault();
     setIsLoginLoading(true);
     try {
-      // 🌟 تم تحديث الرابط هنا إلى الرابط الجديد الخاص بك مباشرة
-      const response = await smartFetch("https://script.google.com/macros/s/AKfycbxuw0gn4MuXwbEilZj2IRIf4K7IxC9QH2RUc0lLhHVxAiGiE_3lHfHlILkqqZi6sVYI/exec", {
+      // 🌟 الرابط الجديد والنهائي المباشر لتجنب مشاكل الـ Environment Variables
+      const response = await smartFetch("https://script.google.com/macros/s/AKfycbw6korqk5leXYwXZP82Ov6-QueZiD2QL1-vIT5-JPO9ZwoFVeWWfFN1gundgFdBTcjE/exec", {
         method: 'POST',
         headers: {
-          'Content-Type': 'text/plain;charset=utf-8', // تجاوز CORS بنجاح
+          'Content-Type': 'text/plain;charset=utf-8', // لتجاوز الـ CORS بنجاح
         },
         body: JSON.stringify({
           email: loginEmail,
@@ -2861,7 +2863,7 @@ export default function App() {
       }
 
       if (result.status === 'success') {
-        // حفظ الجلسة للبقاء داخل التطبيق
+        // حفظ جلسة الدخول في الهاتف
         await Preferences.set({
           key: 'poultry_sheets_authenticated',
           value: 'true'
@@ -2886,11 +2888,11 @@ export default function App() {
     
     setIsLoginLoading(true);
     try {
-      // 🌟 تم تحديث الرابط هنا إلى الرابط الجديد الخاص بك مباشرة
-      const response = await smartFetch("https://script.google.com/macros/s/AKfycbxuw0gn4MuXwbEilZj2IRIf4K7IxC9QH2RUc0lLhHVxAiGiE_3lHfHlILkqqZi6sVYI/exec", {
+      // 🌟 الرابط الجديد والنهائي المباشر لتجنب مشاكل الـ Environment Variables
+      const response = await smartFetch("https://script.google.com/macros/s/AKfycbw6korqk5leXYwXZP82Ov6-QueZiD2QL1-vIT5-JPO9ZwoFVeWWfFN1gundgFdBTcjE/exec", {
         method: 'POST',
         headers: {
-          'Content-Type': 'text/plain;charset=utf-8', // تجاوز CORS بنجاح
+          'Content-Type': 'text/plain;charset=utf-8', // لتجاوز الـ CORS بنجاح
         },
         body: JSON.stringify({
           email: gatewayEmail,
@@ -2910,7 +2912,7 @@ export default function App() {
       }
 
       if (result.status === 'success') {
-        // حفظ الجلسة للبقاء داخل التطبيق
+        // حفظ جلسة الدخول في الهاتف
         await Preferences.set({
           key: 'poultry_sheets_authenticated',
           value: 'true'
