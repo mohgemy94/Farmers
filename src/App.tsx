@@ -137,14 +137,25 @@ import { Preferences } from '@capacitor/preferences';
  * 5. جعل الـ Access: "Anyone".
  * 6. نسخ "Web App URL" ووضعه في ملف server.ts في مسار /api/auth/sheets.
  */
-const SHEETS_AUTH_API_URL = '/api/auth/sheets'; 
+const SHEETS_AUTH_API_URL = 'https://script.google.com/macros/s/AKfycbwVM8zAFMZAGS2W6atZphwECrT_AOXESLCUKKajKwVI9bRnMGa0D_4e6TRBuQ8ymbBE/exec'; 
 
 // --- API Helpers ---
-const API_BASE_URL = import.meta.env.VITE_API_URL || (typeof window !== 'undefined' ? window.location.origin : '');
+const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbwVM8zAFMZAGS2W6atZphwECrT_AOXESLCUKKajKwVI9bRnMGa0D_4e6TRBuQ8ymbBE/exec';
 
 const smartFetch = async (url: string, options: any = {}) => {
-  // Ensure we have a full URL if it's relative
-  const targetUrl = url.startsWith('http') ? url : (API_BASE_URL ? `${API_BASE_URL}${url.startsWith('/') ? '' : '/'}${url}` : url);
+  // Ensure we have a full URL
+  let targetUrl = url;
+  if (!url.startsWith('http')) {
+    // If it's a relative URL, we either prefix with API_BASE_URL or use it as is if it's already the full URL
+    // Since API_BASE_URL is now fixed to the GAS URL, we'll use it carefully.
+    targetUrl = API_BASE_URL;
+    // We could append the original relative URL as an action parameter if needed, 
+    // but the user's GAS script usually distinguishes by the POST body content.
+    if (url !== SHEETS_AUTH_API_URL && url !== '/api/auth/sheets') {
+      const separator = targetUrl.includes('?') ? '&' : '?';
+      targetUrl = `${targetUrl}${separator}route=${encodeURIComponent(url)}`;
+    }
+  }
   
   if (Capacitor.isNativePlatform()) {
     try {
@@ -194,8 +205,8 @@ const smartFetch = async (url: string, options: any = {}) => {
   return fetch(targetUrl, options);
 };
 
-if (Capacitor.isNativePlatform() && !import.meta.env.VITE_API_URL) {
-  console.warn("VITE_API_URL is not set! API calls from the APK to the backend will fail. Please set VITE_API_URL to your server URL.");
+if (Capacitor.isNativePlatform() && !API_BASE_URL) {
+  console.warn("تنبيه: API_BASE_URL غير معرف! هذا قد يعطل الاتصال بالسيرفر في الـ APK.");
 }
 
 // --- Types ---
@@ -1850,7 +1861,7 @@ export default function App() {
       if (!sheetRes || !sheetRes.ok) {
         let errorMsg = `فشل جلب البيانات. المنصة: ${Capacitor.getPlatform()}`;
         if (Capacitor.isNativePlatform() && !API_BASE_URL) {
-          errorMsg += " | تنبيه: VITE_API_URL غير معرف (مهم للـ APK)";
+          errorMsg += " | تنبيه: API_BASE_URL غير معرف (مهم للـ APK)";
         }
         errorMsg += ` | التفاصيل: ${lastError}`;
         console.error(errorMsg);
@@ -2824,17 +2835,13 @@ export default function App() {
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!SHEETS_AUTH_API_URL) {
-      alert("عذراً، نظام الأمان غير مفعل بالكامل. يرجى مراجعة المطور.");
-      return;
-    }
-
     setIsLoginLoading(true);
     try {
-      const response = await smartFetch(SHEETS_AUTH_API_URL, {
+      // 🌟 تم وضع رابط جوجل المباشر هنا لحل مشكلة المتغيرات أثناء بناء جيت هاب
+      const response = await smartFetch("https://script.google.com/macros/s/AKfycbwVM8zAFMZAGS2W6atZphwECrT_AOXESLCUKKajKwVI9bRnMGa0D_4e6TRBuQ8ymbBE/exec", {
         method: 'POST',
         headers: {
-          'Content-Type': 'text/plain;charset=utf-8',
+          'Content-Type': 'text/plain;charset=utf-8', // تجاوز CORS بنجاح
         },
         body: JSON.stringify({
           email: loginEmail,
@@ -2850,7 +2857,7 @@ export default function App() {
       try {
         result = await response.json();
       } catch (e: any) {
-        throw new Error(`تعذر قراءة بيانات السيرفر (Error: ${e.message}). تأكد من أن رابط السيرفر (VITE_API_URL) صحيح وأن السيرفر يعمل.`);
+        throw new Error(`تعذر قراءة بيانات السيرفر (Error: ${e.message}). تأكد من أن السيرفر يعمل بشكل صحيح وأن الرابط صالح.`);
       }
 
       if (result.status === 'success') {
@@ -2877,17 +2884,13 @@ export default function App() {
   const handleGatewayLogin = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     
-    if (!SHEETS_AUTH_API_URL) {
-      alert("عذراً، نظام الأمان غير مفعل بالكامل. يرجى مراجعة المطور.");
-      return;
-    }
-
     setIsLoginLoading(true);
     try {
-      const response = await smartFetch(SHEETS_AUTH_API_URL, {
+      // 🌟 تم وضع رابط جوجل المباشر هنا لحل مشكلة المتغيرات أثناء بناء جيت هاب
+      const response = await smartFetch("https://script.google.com/macros/s/AKfycbwVM8zAFMZAGS2W6atZphwECrT_AOXESLCUKKajKwVI9bRnMGa0D_4e6TRBuQ8ymbBE/exec", {
         method: 'POST',
         headers: {
-          'Content-Type': 'text/plain;charset=utf-8',
+          'Content-Type': 'text/plain;charset=utf-8', // تجاوز CORS بنجاح
         },
         body: JSON.stringify({
           email: gatewayEmail,
@@ -2903,7 +2906,7 @@ export default function App() {
       try {
         result = await response.json();
       } catch (e: any) {
-        throw new Error(`تعذر قراءة بيانات السيرفر (Error: ${e.message}). تأكد من أن رابط السيرفر (VITE_API_URL) صحيح وأن السيرفر يعمل.`);
+        throw new Error(`تعذر قراءة بيانات السيرفر (Error: ${e.message}). تأكد من أن السيرفر يعمل بشكل صحيح وأن الرابط صالح.`);
       }
 
       if (result.status === 'success') {
