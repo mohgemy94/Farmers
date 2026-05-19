@@ -137,10 +137,10 @@ import { Preferences } from '@capacitor/preferences';
  * 5. جعل الـ Access: "Anyone".
  * 6. نسخ "Web App URL" ووضعه في ملف server.ts في مسار /api/auth/sheets.
  */
-const SHEETS_AUTH_API_URL = 'https://script.google.com/macros/s/AKfycbwVM8zAFMZAGS2W6atZphwECrT_AOXESLCUKKajKwVI9bRnMGa0D_4e6TRBuQ8ymbBE/exec'; 
+const SHEETS_AUTH_API_URL = 'https://script.google.com/macros/s/AKfycbxuw0gn4MuXwbEilZj2IRIf4K7IxC9QH2RUc0lLhHVxAiGiE_3lHfHlILkqqZi6sVYI/exec'; 
 
 // --- API Helpers ---
-const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbwVM8zAFMZAGS2W6atZphwECrT_AOXESLCUKKajKwVI9bRnMGa0D_4e6TRBuQ8ymbBE/exec';
+const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbxuw0gn4MuXwbEilZj2IRIf4K7IxC9QH2RUc0lLhHVxAiGiE_3lHfHlILkqqZi6sVYI/exec';
 
 const smartFetch = async (url: string, options: any = {}) => {
   // Ensure we have a full URL
@@ -2837,8 +2837,8 @@ export default function App() {
     e.preventDefault();
     setIsLoginLoading(true);
     try {
-      // 🌟 تم وضع رابط جوجل المباشر هنا لحل مشكلة المتغيرات أثناء بناء جيت هاب
-      const response = await smartFetch("https://script.google.com/macros/s/AKfycbwVM8zAFMZAGS2W6atZphwECrT_AOXESLCUKKajKwVI9bRnMGa0D_4e6TRBuQ8ymbBE/exec", {
+      // 🌟 تم تحديث الرابط هنا إلى الرابط الجديد الخاص بك مباشرة
+      const response = await smartFetch("https://script.google.com/macros/s/AKfycbxuw0gn4MuXwbEilZj2IRIf4K7IxC9QH2RUc0lLhHVxAiGiE_3lHfHlILkqqZi6sVYI/exec", {
         method: 'POST',
         headers: {
           'Content-Type': 'text/plain;charset=utf-8', // تجاوز CORS بنجاح
@@ -2861,7 +2861,7 @@ export default function App() {
       }
 
       if (result.status === 'success') {
-        // Save session
+        // حفظ الجلسة للبقاء داخل التطبيق
         await Preferences.set({
           key: 'poultry_sheets_authenticated',
           value: 'true'
@@ -2886,8 +2886,8 @@ export default function App() {
     
     setIsLoginLoading(true);
     try {
-      // 🌟 تم وضع رابط جوجل المباشر هنا لحل مشكلة المتغيرات أثناء بناء جيت هاب
-      const response = await smartFetch("https://script.google.com/macros/s/AKfycbwVM8zAFMZAGS2W6atZphwECrT_AOXESLCUKKajKwVI9bRnMGa0D_4e6TRBuQ8ymbBE/exec", {
+      // 🌟 تم تحديث الرابط هنا إلى الرابط الجديد الخاص بك مباشرة
+      const response = await smartFetch("https://script.google.com/macros/s/AKfycbxuw0gn4MuXwbEilZj2IRIf4K7IxC9QH2RUc0lLhHVxAiGiE_3lHfHlILkqqZi6sVYI/exec", {
         method: 'POST',
         headers: {
           'Content-Type': 'text/plain;charset=utf-8', // تجاوز CORS بنجاح
@@ -2910,7 +2910,7 @@ export default function App() {
       }
 
       if (result.status === 'success') {
-        // Save session
+        // حفظ الجلسة للبقاء داخل التطبيق
         await Preferences.set({
           key: 'poultry_sheets_authenticated',
           value: 'true'
