@@ -17,23 +17,58 @@ async function startServer() {
 
   // API Route to proxy Google Sheets Auth (CORS workaround)
   app.post("/api/auth/sheets", async (req, res) => {
-    const SHEETS_AUTH_API_URL = 'https://script.google.com/macros/s/AKfycbzpCrAbvtDykBIzgadh9oHEoNUrn3bcKClSV2s8pU4GOBxddlo3rrRuSzRmpj8W-XNb/exec';
+    const { email, password } = req.body;
+    const SHEET_AUTH_CSV_URL = 'https://docs.google.com/spreadsheets/d/1YR75Z4MPxn37PYy2YVimjJXXU1bPflEigEMRU6kgSiE/export?format=csv&gid=1919881010';
     
     try {
-      console.log(`[API] Proxying Sheets Auth for ${req.body.email}`);
-      const response = await fetch(SHEETS_AUTH_API_URL, {
-        method: 'POST',
+      console.log(`[API] Authenticating ${email} via Sheet CSV`);
+      
+      const response = await fetch(SHEET_AUTH_CSV_URL, {
         headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(req.body)
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
+        }
       });
+      
+      if (!response.ok) {
+        throw new Error(`Sheet fetch failed: ${response.status}`);
+      }
+      
+      const csvText = await response.text();
+      const rows = csvText.split(/\r?\n/).filter(line => line.trim() !== "");
+      
+      let authenticated = false;
+      
+      // Iterate through rows
+      for (const row of rows) {
+        // Handle basic CSV splitting with potential quotes
+        const cols = row.split(',').map(cell => cell.replace(/^["']|["']$/g, '').trim());
+        
+        // Column A: Email (index 0), Column B: Password (index 1)
+        if (cols.length >= 2) {
+          const sheetEmail = cols[0];
+          const sheetPassword = cols[1];
+          
+          if (sheetEmail === email && sheetPassword === password) {
+            authenticated = true;
+            break;
+          }
+        }
+      }
 
-      const data = await response.json();
-      res.json(data);
+      if (authenticated) {
+        res.json({ status: 'success' });
+      } else {
+        res.json({ 
+          status: 'error', 
+          message: "الإيميل أو كلمة المرور غير صحيحة. يرجى التأكد من البيانات والمحاولة مرة أخرى." 
+        });
+      }
     } catch (error) {
-      console.error("[API Error] Sheets Auth Proxy failed:", error);
-      res.status(500).json({ status: 'error', message: "Internal server error connecting to security system." });
+      console.error("[API Error] Sheets Auth failed:", error);
+      res.status(500).json({ 
+        status: 'error', 
+        message: "حدث خطأ فني أثناء التحقق من البيانات. تأكد من أن الشيت متاح للعرض (Anyone with the link can view)." 
+      });
     }
   });
 

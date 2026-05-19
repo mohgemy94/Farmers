@@ -64,6 +64,8 @@ import {
   Minus,
   Edit3,
   Check,
+  Eye,
+  EyeOff,
   Bird,
   LayoutGrid,
   Coins,
@@ -1670,8 +1672,12 @@ export default function App() {
   });
   const [gatewayEmail, setGatewayEmail] = useState('');
   const [gatewayPassword, setGatewayPassword] = useState('');
+  const [rememberMeGateway, setRememberMeGateway] = useState(false);
+  const [showGatewayPassword, setShowGatewayPassword] = useState(false);
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
+  const [rememberMeLogin, setRememberMeLogin] = useState(false);
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [isDriveLoading, setIsDriveLoading] = useState(false);
@@ -2164,12 +2170,14 @@ export default function App() {
         const { email, password } = JSON.parse(savedGateway);
         setGatewayEmail(email);
         setGatewayPassword(password);
+        setRememberMeGateway(true);
       } catch (e) {
         localStorage.removeItem('poultry_gateway_credentials');
       }
     } else {
       setGatewayEmail('');
       setGatewayPassword('');
+      setRememberMeGateway(false);
     }
 
     const savedLogin = localStorage.getItem('poultry_login_credentials');
@@ -2178,12 +2186,14 @@ export default function App() {
         const { email, password } = JSON.parse(savedLogin);
         setLoginEmail(email);
         setLoginPassword(password);
+        setRememberMeLogin(true);
       } catch (e) {
         localStorage.removeItem('poultry_login_credentials');
       }
     } else {
       setLoginEmail('');
       setLoginPassword('');
+      setRememberMeLogin(false);
     }
   }, [screen]); // Re-sync when returning to login screens
 
@@ -2851,6 +2861,15 @@ export default function App() {
           key: 'poultry_sheets_authenticated',
           value: 'true'
         });
+
+        if (rememberMeLogin) {
+          localStorage.setItem('poultry_login_credentials', JSON.stringify({ 
+            email: loginEmail, 
+            password: loginPassword 
+          }));
+        } else {
+          localStorage.removeItem('poultry_login_credentials');
+        }
         
         sessionStorage.setItem('poultry_gateway_passed', 'true');
         setScreen('landing');
@@ -2900,6 +2919,15 @@ export default function App() {
           key: 'poultry_sheets_authenticated',
           value: 'true'
         });
+
+        if (rememberMeGateway) {
+          localStorage.setItem('poultry_gateway_credentials', JSON.stringify({ 
+            email: gatewayEmail, 
+            password: gatewayPassword 
+          }));
+        } else {
+          localStorage.removeItem('poultry_gateway_credentials');
+        }
         
         sessionStorage.setItem('poultry_gateway_passed', 'true');
         setScreen('landing');
@@ -4538,15 +4566,40 @@ export default function App() {
             
             <div className="space-y-2 text-right">
               <label className="text-xs font-black text-slate-500 uppercase tracking-widest me-2">كلمة المرور</label>
-              <input 
-                type="password"
-                value={gatewayPassword}
-                onChange={(e) => setGatewayPassword(e.target.value)}
-                placeholder="••••••••"
-                required
-                className="w-full bg-slate-950/50 border-2 border-white/5 rounded-2xl px-6 py-5 focus:border-blue-600 focus:outline-none font-bold text-white transition-all placeholder:text-slate-700"
-              />
+              <div className="relative">
+                <input 
+                  type={showGatewayPassword ? "text" : "password"}
+                  value={gatewayPassword}
+                  onChange={(e) => setGatewayPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                  className="w-full bg-slate-950/50 border-2 border-white/5 rounded-2xl px-6 py-5 focus:border-blue-600 focus:outline-none font-bold text-white transition-all placeholder:text-slate-700"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowGatewayPassword(!showGatewayPassword)}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors"
+                >
+                  {showGatewayPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
             </div>
+
+            <label className="flex items-center gap-3 cursor-pointer group select-none mt-2">
+              <div className="relative">
+                <input 
+                  type="checkbox" 
+                  checked={rememberMeGateway}
+                  onChange={(e) => setRememberMeGateway(e.target.checked)}
+                  className="sr-only peer"
+                />
+                <div className="w-6 h-6 bg-slate-950/50 border-2 border-white/10 rounded-lg transition-all peer-checked:bg-blue-600 peer-checked:border-blue-500 group-hover:border-blue-400"></div>
+                <div className="absolute inset-0 flex items-center justify-center text-white scale-0 peer-checked:scale-100 transition-transform">
+                  <Check size={14} strokeWidth={4} />
+                </div>
+              </div>
+              <span className="text-sm font-bold text-slate-400 group-hover:text-slate-300 transition-colors">تذكرني</span>
+            </label>
 
             <motion.button 
               whileHover={{ scale: 1.01 }}
@@ -4602,15 +4655,40 @@ export default function App() {
                 required
                 className="w-full bg-slate-900 border-2 border-white/5 rounded-xl px-4 py-4 focus:border-blue-600 focus:outline-none font-bold text-white transition-all"
               />
-              <input 
-                name="password"
-                type="password"
-                value={loginPassword}
-                onChange={(e) => setLoginPassword(e.target.value)}
-                placeholder="كلمة المرور"
-                required
-                className="w-full bg-slate-900 border-2 border-white/5 rounded-xl px-4 py-4 focus:border-blue-600 focus:outline-none font-bold text-white transition-all"
-              />
+              <div className="relative">
+                <input 
+                  name="password"
+                  type={showLoginPassword ? "text" : "password"}
+                  value={loginPassword}
+                  onChange={(e) => setLoginPassword(e.target.value)}
+                  placeholder="كلمة المرور"
+                  required
+                  className="w-full bg-slate-900 border-2 border-white/5 rounded-xl px-4 py-4 focus:border-blue-600 focus:outline-none font-bold text-white transition-all"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowLoginPassword(!showLoginPassword)}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors"
+                >
+                  {showLoginPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
+
+              <label className="flex items-center gap-3 cursor-pointer group select-none">
+                <div className="relative">
+                  <input 
+                    type="checkbox" 
+                    checked={rememberMeLogin}
+                    onChange={(e) => setRememberMeLogin(e.target.checked)}
+                    className="sr-only peer"
+                  />
+                  <div className="w-6 h-6 bg-slate-900 border-2 border-white/10 rounded-lg transition-all peer-checked:bg-blue-600 peer-checked:border-blue-500 group-hover:border-blue-400"></div>
+                  <div className="absolute inset-0 flex items-center justify-center text-white scale-0 peer-checked:scale-100 transition-transform">
+                    <Check size={14} strokeWidth={4} />
+                  </div>
+                </div>
+                <span className="text-sm font-bold text-slate-400 group-hover:text-slate-300 transition-colors">تذكر بياناتي</span>
+              </label>
 
               <motion.button 
                 whileHover={{ scale: 1.02 }}
