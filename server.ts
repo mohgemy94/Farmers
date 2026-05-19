@@ -17,7 +17,7 @@ async function startServer() {
 
   // API Route to proxy Google Sheets Auth (CORS workaround)
   app.post("/api/auth/sheets", async (req, res) => {
-    const SHEETS_AUTH_API_URL = 'https://script.google.com/macros/s/AKfycbx_PMN2dTf_phtAptmfIxg4tBj4BkUFWJQHCKt50Lz0vYbVJ1GheIFatBaa1vokiS1P/exec';
+    const SHEETS_AUTH_API_URL = 'https://script.google.com/macros/s/AKfycbzpCrAbvtDykBIzgadh9oHEoNUrn3bcKClSV2s8pU4GOBxddlo3rrRuSzRmpj8W-XNb/exec';
     
     try {
       console.log(`[API] Proxying Sheets Auth for ${req.body.email}`);
