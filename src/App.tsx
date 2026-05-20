@@ -1690,6 +1690,19 @@ export default function App() {
   const [gatewayPassword, setGatewayPassword] = useState('');
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(() => localStorage.getItem('poultry_remember_me') === 'true');
+  const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem('poultry_remember_me') === 'true') {
+      const savedEmail = localStorage.getItem('poultry_saved_email');
+      if (savedEmail) {
+        setLoginEmail(savedEmail);
+        setGatewayEmail(savedEmail);
+      }
+    }
+  }, []);
+
   const [user, setUser] = useState<any>(null);
   const [authLoading, setAuthLoading] = useState(false);
   const [isDriveLoading, setIsDriveLoading] = useState(false);
@@ -2664,7 +2677,8 @@ export default function App() {
 
     // Web Fallback (Development/Browser)
     // Attempt to use Web Share API
-    if (navigator.share && navigator.canShare) {
+    const isIframe = typeof window !== 'undefined' && window.self !== window.top;
+    if (navigator.share && navigator.canShare && !isIframe) {
       try {
         const file = new File([dataStr], fileName, { type: 'application/json' });
         if (navigator.canShare({ files: [file] })) {
@@ -2676,7 +2690,7 @@ export default function App() {
           return; 
         }
       } catch (err) {
-        console.error('Share API error:', err);
+        console.warn('Share API not supported or permission denied:', err);
       }
     }
 
@@ -2863,6 +2877,15 @@ export default function App() {
       }
 
       if (result.status === 'success') {
+        // حفظ خيارات تذكرني
+        if (rememberMe) {
+          localStorage.setItem('poultry_remember_me', 'true');
+          localStorage.setItem('poultry_saved_email', loginEmail);
+        } else {
+          localStorage.removeItem('poultry_remember_me');
+          localStorage.removeItem('poultry_saved_email');
+        }
+
         // حفظ جلسة الدخول في الهاتف
         await Preferences.set({
           key: 'poultry_sheets_authenticated',
@@ -2912,6 +2935,15 @@ export default function App() {
       }
 
       if (result.status === 'success') {
+        // حفظ خيارات تذكرني للمدخلين
+        if (rememberMe) {
+          localStorage.setItem('poultry_remember_me', 'true');
+          localStorage.setItem('poultry_saved_email', gatewayEmail);
+        } else {
+          localStorage.removeItem('poultry_remember_me');
+          localStorage.removeItem('poultry_saved_email');
+        }
+
         // حفظ جلسة الدخول في الهاتف
         await Preferences.set({
           key: 'poultry_sheets_authenticated',
@@ -4553,16 +4585,45 @@ export default function App() {
               />
             </div>
             
-            <div className="space-y-2 text-right">
+            <div className="space-y-2 text-right relative">
               <label className="text-xs font-black text-slate-500 uppercase tracking-widest me-2">كلمة المرور</label>
-              <input 
-                type="password"
-                value={gatewayPassword}
-                onChange={(e) => setGatewayPassword(e.target.value)}
-                placeholder="••••••••"
-                required
-                className="w-full bg-slate-950/50 border-2 border-white/5 rounded-2xl px-6 py-5 focus:border-blue-600 focus:outline-none font-bold text-white transition-all placeholder:text-slate-700"
-              />
+              <div className="relative">
+                <input 
+                  type={showPassword ? "text" : "password"}
+                  value={gatewayPassword}
+                  onChange={(e) => setGatewayPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                  className="w-full bg-slate-950/50 border-2 border-white/5 rounded-2xl px-6 py-5 pr-6 pl-14 focus:border-blue-600 focus:outline-none font-bold text-white transition-all placeholder:text-slate-700"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors"
+                >
+                  {showPassword ? <EyeOff size={22} /> : <Eye size={22} />}
+                </button>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between px-2 pt-2">
+              <label className="flex items-center gap-3 cursor-pointer group">
+                <div className="relative w-6 h-6 rounded-lg border-2 border-white/10 group-hover:border-blue-500/50 transition-colors flex items-center justify-center overflow-hidden">
+                  <input 
+                    type="checkbox" 
+                    className="peer hidden" 
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)} 
+                  />
+                  <div className={cn(
+                    "w-full h-full bg-blue-600 flex items-center justify-center transition-all duration-300",
+                    rememberMe ? "scale-100 opacity-100" : "scale-0 opacity-0"
+                  )}>
+                    <Check size={16} className="text-white" strokeWidth={4} />
+                  </div>
+                </div>
+                <span className="text-slate-400 font-bold text-sm select-none">تذكرني</span>
+              </label>
             </div>
 
             <motion.button 
@@ -4619,15 +4680,45 @@ export default function App() {
                 required
                 className="w-full bg-slate-900 border-2 border-white/5 rounded-xl px-4 py-4 focus:border-blue-600 focus:outline-none font-bold text-white transition-all"
               />
-              <input 
-                name="password"
-                type="password"
-                value={loginPassword}
-                onChange={(e) => setLoginPassword(e.target.value)}
-                placeholder="كلمة المرور"
-                required
-                className="w-full bg-slate-900 border-2 border-white/5 rounded-xl px-4 py-4 focus:border-blue-600 focus:outline-none font-bold text-white transition-all"
-              />
+              
+              <div className="relative group">
+                <input 
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  value={loginPassword}
+                  onChange={(e) => setLoginPassword(e.target.value)}
+                  placeholder="كلمة المرور"
+                  required
+                  className="w-full bg-slate-900 border-2 border-white/5 rounded-xl px-4 py-4 pr-4 pl-12 focus:border-blue-600 focus:outline-none font-bold text-white transition-all"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors"
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
+
+              <div className="flex items-center justify-between px-2">
+                <label className="flex items-center gap-3 cursor-pointer group">
+                  <div className="relative w-5 h-5 rounded-md border-2 border-white/10 group-hover:border-blue-500/50 transition-colors flex items-center justify-center overflow-hidden">
+                    <input 
+                      type="checkbox" 
+                      className="peer hidden" 
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)} 
+                    />
+                    <div className={cn(
+                      "w-full h-full bg-blue-600 flex items-center justify-center transition-all duration-300",
+                      rememberMe ? "scale-100 opacity-100" : "scale-0 opacity-0"
+                    )}>
+                      <Check size={14} className="text-white" strokeWidth={4} />
+                    </div>
+                  </div>
+                  <span className="text-slate-400 font-bold text-xs select-none">تذكرني</span>
+                </label>
+              </div>
 
               <motion.button 
                 whileHover={{ scale: 1.02 }}
