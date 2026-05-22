@@ -89,6 +89,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Capacitor, CapacitorHttp } from '@capacitor/core';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Toast } from '@capacitor/toast';
+import { Share } from '@capacitor/share';
 import { 
   LineChart, 
   Line, 
@@ -2343,7 +2344,67 @@ export default function App() {
       console.error("Sheet fetch proxy failed:", error);
     }
 
-    // 2. Fallback if sheet fails or data not found
+    // 2. Direct Web Scrape on Native Platforms (Capacitor) as a direct backup bypass
+    if (!success && Capacitor.isNativePlatform()) {
+      try {
+        console.log("Attempting direct client-side scrape on native platform...");
+        const sourcesWeb = [
+          'https://www.biltafsil.com/poultry/',
+          'https://www.biltafsil.com/poultry/chickens/',
+          'https://misr365.com/price/chickens-price-today/',
+          'https://sarery.com/bourse-poultry/'
+        ];
+        const patternsWeb = [
+          /البيضاء.*?<td>(\d+)/i,
+          /اللحم الأبيض.*?<td>(\d+)/i,
+          /البيضاء اليوم.*?(\d+)/,
+          /سعر الفراخ البيضاء اليوم.*?(\d+)/,
+          /لحم الفراخ البيضاء\s*<\/td>\s*<td>\s*(\d+)/i,
+          /الفراخ البيضاء\s*<\/td>\s*<td>\s*(\d+)/i,
+          /اللحم الأبيض\s*<\/td>\s*<td>\s*(\d+)/i,
+          /الفراخ البيضاء\s*:\s*(\d+)/,
+          /البيضاء\s*:\s*(\d+)/,
+          /الفراخ البيضاء [^<]{0,100}? (\d+)/i,
+          /(\d+)\s*جنيه\s*<\/td>/,
+          /(\d+)\s*<\/span>\s*جنيه/
+        ];
+        for (const url of sourcesWeb) {
+          try {
+            const res = await CapacitorHttp.request({
+              url: url,
+              method: 'GET',
+              headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
+              },
+              connectTimeout: 4000,
+              readTimeout: 4000
+            });
+            if (res.status === 200 && typeof res.data === 'string') {
+              const html = res.data;
+              for (const pattern of patternsWeb) {
+                const match = html.match(pattern);
+                if (match && match[1]) {
+                  const parsed = parseInt(match[1]);
+                  if (parsed >= 50 && parsed <= 150) {
+                    price = parsed;
+                    source = `رصد مباشر (بورصة)`;
+                    success = true;
+                    break;
+                  }
+                }
+              }
+            }
+            if (success) break;
+          } catch (scrapeErr) {
+            console.warn(`Direct native scrape failed for ${url}:`, scrapeErr);
+          }
+        }
+      } catch (err) {
+        console.warn("Direct native scrape handler failed:", err);
+      }
+    }
+
+    // 3. Fallback if sheet and direct scrape fails (using the server API if present)
     if (!success) {
       try {
         const response = await smartFetch('/api/poultry-price', {
@@ -2355,26 +2416,35 @@ export default function App() {
         if (response.ok) {
           const text = await response.text();
           if (text.trim().startsWith('<')) {
-            throw new Error("Server returned HTML instead of JSON (possibly a 404 fallback)");
-          }
-          let data;
-          try {
-            data = JSON.parse(text);
-          } catch (e) {
-            throw new Error("Invalid JSON format in price response");
-          }
-          
-          if (data.price) {
-            price = data.price;
-            source = data.source || "بورصة الدواجن (احتياطي)";
-            success = true;
+            console.warn("Server returned HTML instead of JSON for poultry price. Falling back to default.");
+          } else {
+            let data;
+            try {
+              data = JSON.parse(text);
+              if (data && data.price) {
+                price = data.price;
+                source = data.source || "بورصة الدواجن (احتياطي)";
+                success = true;
+              }
+            } catch (e) {
+              console.warn("Invalid JSON format in price response. Falling back to default.");
+            }
           }
         } else {
-          console.error("Poultry price API failed with status:", response.status);
+          console.warn("Poultry price API failed with status:", response.status);
         }
       } catch (error) {
-        console.error("Fallback poultry price fetch failed:", error);
+        console.warn("Fallback poultry price fetch failed:", error);
       }
+    }
+
+    // 4. Graceful default fallback price so the app always functions smoothly
+    if (!success) {
+      price = state?.sellingPrice && toNum(state.sellingPrice) >= 50 && toNum(state.sellingPrice) <= 180 
+        ? toNum(state.sellingPrice) 
+        : 78; // 78 EGP as a realistic standard price fallback
+      source = "سعر تقديري (احتياطي)";
+      success = true;
     }
 
     if (success) {
@@ -2435,6 +2505,19 @@ export default function App() {
 
     return () => clearInterval(refreshInterval);
   }, []);
+
+  // مزامنة الحرارة الخارجية مع شاشة الطقس تلقائياً
+  useEffect(() => {
+    if (weather?.current_weather?.temperature !== undefined) {
+      const wTemp = Math.round(weather.current_weather.temperature);
+      setState(prev => {
+        if (Number(prev.externalTemp) !== wTemp) {
+          return { ...prev, externalTemp: wTemp };
+        }
+        return prev;
+      });
+    }
+  }, [weather?.current_weather?.temperature]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -2637,40 +2720,35 @@ export default function App() {
     // Check if running on Native Platform (Android/iOS)
     if (Capacitor.isNativePlatform()) {
       try {
-        // 1. Request Runtime Permissions
-        const permStatus = await Filesystem.checkPermissions();
-        if (permStatus.publicStorage !== 'granted') {
-          const reqStatus = await Filesystem.requestPermissions();
-          if (reqStatus.publicStorage !== 'granted') {
-            alert('يجب الموافقة على صلاحيات الوصول للتخزين لكي نتمكن من حفظ النسخة الاحتياطية.');
-            return;
-          }
-        }
-
-        // 2. Save File
-        // On Android we try to save to the public "Download" folder
-        // On iOS we save to "Documents" (which is visible in the Files app if configured)
-        const isAndroid = Capacitor.getPlatform() === 'android';
-        
-        await Filesystem.writeFile({
-          path: isAndroid ? `Download/${fileName}` : fileName,
+        // 1. Save file to private Cache directory where no special runtime permissions are needed.
+        // This avoids Android 11+ permission denial issues (public storage permissions are blocked/deprecated).
+        const writeResult = await Filesystem.writeFile({
+          path: fileName,
           data: dataStr,
-          directory: isAndroid ? Directory.ExternalStorage : Directory.Documents,
-          encoding: Encoding.UTF8,
-          recursive: true
+          directory: Directory.Cache,
+          encoding: Encoding.UTF8
         });
 
-        alert(`تم حفظ النسخة الاحتياطية بنجاح باسم: ${fileName}\n${isAndroid ? 'يمكنك العثور عليها في مجلد "Downloads" في جهازك.' : 'يمكنك العثور عليها في تطبيق "Files" الخاص بجهازك.'}`);
-        
+        // 2. Open Native Share sheet allowing user to save file in any download folder,
+        // Google Drive, Files app (iOS/Android), or share it via chat apps (WhatsApp/Telegram).
+        await Share.share({
+          title: 'نسخة احتياطية - مدير الدواجن',
+          text: 'ملف البيانات الكامل لبرنامج إدارة الدواجن',
+          url: writeResult.uri,
+          dialogTitle: 'حفظ أو مشاركة ملف النسخة الاحتياطية'
+        });
+
         if (Toast) {
           await Toast.show({
-            text: 'تم الحفظ بنجاح',
+            text: 'تم تجهيز ملف النسخة بنجاح',
             duration: 'short'
           });
         }
       } catch (err: any) {
-        console.error('Backup Error:', err);
-        alert(`فشل الحفظ: ${err.message || 'خطأ غير معروف'}`);
+        console.error('Backup Native Error:', err);
+        // Fallback to simpler method if native share fails: alert and copy code
+        alert(`فشل الحفظ التلقائي: ${err.message || 'خطأ غير معروف'}.\nسنقوم بنسخ الكود الاحتياطي ليمكنك حفظه يدوياً.`);
+        copyBackupCode();
       }
       return;
     }
@@ -5431,33 +5509,22 @@ export default function App() {
                 </div>
               </div>
 
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest text-right">الحرارة الخارجية (°م)</label>
-                  {weather?.current_weather && (
-                    <button 
-                      type="button"
-                      onClick={() => setState(prev => ({ ...prev, externalTemp: Math.round(weather.current_weather.temperature) }))}
-                      className="flex items-center gap-1.5 px-3 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-full text-[9px] font-black hover:bg-blue-500/20 transition-all active:scale-95"
-                    >
-                      <CloudSun size={10} />
-                      تحديث من الطقس ({Math.round(weather.current_weather.temperature)}°)
-                    </button>
-                  )}
+              <div className="bg-slate-950/40 p-4 rounded-2xl border border-white/5 flex items-center justify-between">
+                <div className="text-right">
+                  <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">الحرارة الخارجية تلقائياً (°م)</p>
                 </div>
-                <input 
-                  type="text"
-                  inputMode="decimal"
-                  value={state.externalTemp ?? ''}
-                  onChange={e => {
-                    const val = e.target.value;
-                    if (val === '' || /^-?\d*\.?\d*$/.test(val)) {
-                      setState(prev => ({ ...prev, externalTemp: val }));
-                    }
-                  }}
-                  className="w-full bg-slate-900 border-2 border-white/5 rounded-xl px-4 py-4 focus:border-blue-600 focus:outline-none font-black text-white text-lg transition-all"
-                  placeholder="25"
-                />
+                <div className={cn(
+                  "px-4 py-2 rounded-xl text-lg font-black border transition-colors duration-300",
+                  state.externalTemp === undefined || state.externalTemp === null || state.externalTemp === '' || state.externalTemp === '--'
+                    ? "bg-slate-500/10 text-slate-400 border-slate-500/20"
+                    : toNum(state.externalTemp) === targetTemp
+                      ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+                      : toNum(state.externalTemp) < targetTemp
+                        ? "bg-blue-500/10 text-blue-400 border-blue-500/20"
+                        : "bg-red-500/10 text-red-400 border-red-500/20"
+                )}>
+                  {state.externalTemp ?? '--'}°م
+                </div>
               </div>
 
               <div>
