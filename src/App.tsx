@@ -825,9 +825,9 @@ const ExpertScreen = ({ age, onNavigate }: { age: number, onNavigate: (screen: S
 };
 
 const WorkshopScreen = ({ onNavigate }: { onNavigate: (screen: Screen) => void }) => {
-  const whatsappLink = `https://wa.me/201115127032?text=${encodeURIComponent('السلام عليكم ورحمة الله وبركاته، أود الاستفسار وطلب عرض سعر لتجهيزات وبطاريات دواجن لمزرعتي.')}`;
+  const whatsappLink = `https://wa.me/201115127032?text=${encodeURIComponent('السلام عليكم ورحمة الله وبركاته، أود الاستفسار وطلب عرض سعر لتجهيزات وبطاريات دواجن ومستلزمات العنابر لمزرعتي.')}`;
   const telegramLink = `https://t.me/smartpoultrymanager`;
-  const facebookLink = `https://www.facebook.com/poultry.battery.workshop`;
+  const facebookLink = `https://www.facebook.com/profile.php?id=61589961329928`;
 
   return (
     <div className="space-y-6 text-right pb-24" dir="rtl">
@@ -839,7 +839,7 @@ const WorkshopScreen = ({ onNavigate }: { onNavigate: (screen: Screen) => void }
             <h2 className="text-2xl font-black text-white tracking-tight">مركز خدمة العملاء والدعم المباشر</h2>
           </div>
           <p className="text-xs text-slate-400 font-bold leading-relaxed">
-            تواصل مباشر وحصري للحصول على أفضل الحلول الهندسية لتصميم وتفصيل بطاريات الدواجن بأعلى كفاءة وجودة.
+            تواصل مباشر وحصري للحصول على أفضل الحلول الهندسية لتصميم وتفصيل بطاريات الدواجن وتوفير جميع مستلزمات تجهيز العنابر بأعلى كفاءة وجودة.
           </p>
         </div>
         <div className="flex items-center gap-2 bg-slate-900 border border-white/5 px-3 py-1.5 rounded-full self-start sm:self-auto shadow-inner">
@@ -859,19 +859,19 @@ const WorkshopScreen = ({ onNavigate }: { onNavigate: (screen: Screen) => void }
           {[
             {
               title: "استشارات فنية مجانية 🩺",
-              desc: "مساعدتك في اختيار المقاس المناسب لحجم عنبرك وموقع مشروعك.",
+              desc: "مساعدتك في اختيار المقاس المناسب لحجم عنبرك وموقع مشروعك بأعلى كفاءة هندسية.",
               color: "border-indigo-500/10 hover:border-indigo-500/30",
               iconBg: "bg-indigo-500/10 text-indigo-400"
             },
             {
-              title: "صناعة مخصصة عالية الجودة 📐",
-              desc: "تفصيل وتصنيع بطاريات تسمين وبياض وحضانات مقاومة للصدأ بمواصفات قياسية.",
+              title: "جميع مستلزمات تجهيز العنابر 📐",
+              desc: "تأمين كامل خطوط النبل، السقايات والعلّافات الأوتوماتيكية، لوحات التحكم، والتهوية وأنظمة خلايا التبريد والبطاريات.",
               color: "border-amber-500/10 hover:border-amber-500/30",
               iconBg: "bg-amber-500/10 text-amber-400"
             },
             {
               title: "دعم ومتابعة مستمرة 🚀",
-              desc: "شحن وتوريد لجميع المحافظات مع تقديم إرشادات التركيب والصيانة.",
+              desc: "شحن وتوريد لجميع المحافظات مع تقديم إرشادات التركيب والصيانة وبرامج الرعاية المتكاملة.",
               color: "border-teal-500/10 hover:border-teal-500/30",
               iconBg: "bg-teal-500/10 text-teal-400"
             }
@@ -909,9 +909,9 @@ const WorkshopScreen = ({ onNavigate }: { onNavigate: (screen: Screen) => void }
               <span className="text-[9px] font-black text-indigo-400 tracking-wider uppercase bg-indigo-400/5 px-2 py-0.5 rounded-full border border-indigo-400/10 inline-block mb-1">
                 خدمة العملاء الشاملة
               </span>
-              <h4 className="text-base font-black text-white">صناعة وتفصيل بطاريات الدواجن للعملاء 📐</h4>
+              <h4 className="text-base font-black text-white">صناعة وتفصيل بطاريات الدواجن وجميع مستلزمات تجهيز العنابر 📐</h4>
               <p className="text-[11px] text-slate-400 font-bold leading-normal">
-                طلب وتفصيل التجهيزات الحديثة لزيادة القدرة الإنتاجية وتقليل معدل الهدر في العنبر.
+                طلب وتفصيل التجهيزات الحديثة وتأمين كافة مستلزمات التهوية، التدفئة، بطاريات التسمين والبياض لزيادة كفاءة عنبرك.
               </p>
             </div>
           </div>
@@ -923,7 +923,7 @@ const WorkshopScreen = ({ onNavigate }: { onNavigate: (screen: Screen) => void }
                 <span>قنوات التواصل وطلب عروض الأسعار والدعم المباشر</span>
               </h5>
               <p className="text-[11px] text-slate-400 font-bold leading-normal">
-                اختر القناة المفضلة لديك للتواصل الفوري مع مهندسينا وتلقي تفاصيل الأسعار ومواصفات الشحن والتركيب خطوة بخطوة:
+                اختر القناة المفضلة لديك للتواصل الفوري مع مهندسينا وتلقي تفاصيل الأسعار ومواصفات الشحن والتركيب لجميع مستلزمات التجهيز والبطاريات:
               </p>
             </div>
 
@@ -941,7 +941,7 @@ const WorkshopScreen = ({ onNavigate }: { onNavigate: (screen: Screen) => void }
                   </div>
                   <div className="text-right">
                     <h5 className="text-xs font-black text-white">تواصل مبيعات عبر واتس آب (WhatsApp)</h5>
-                    <p className="text-[10px] text-emerald-400/80 font-bold mt-0.5">دردشة فورية مع قسم المبيعات لجميع عروض الأسعار والتجهيزات</p>
+                    <p className="text-[10px] text-emerald-400/80 font-bold mt-0.5">دردشة فورية لطلب البطاريات وعروض أسعار جميع مستلزمات تجهيز العنابر</p>
                   </div>
                 </div>
                 <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 group-hover:translate-x-[-4px] transition-transform">
@@ -962,7 +962,7 @@ const WorkshopScreen = ({ onNavigate }: { onNavigate: (screen: Screen) => void }
                   </div>
                   <div className="text-right">
                     <h5 className="text-xs font-black text-white">تواصل وقناة العروض عبر تلجرام (Telegram Channel)</h5>
-                    <p className="text-[10px] text-blue-400/80 font-bold mt-0.5">انضم لقناتنا لمشاهدة أحدث التصاميم والفيديوهات الحية من داخل الورشة والمعامل</p>
+                    <p className="text-[10px] text-blue-400/80 font-bold mt-0.5">انضم لقناتنا لمشاهدة خطوط الإنتاج والبطاريات وتجهيزات العنابر كاملة بالفيديو</p>
                   </div>
                 </div>
                 <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover:translate-x-[-4px] transition-transform">
@@ -983,7 +983,7 @@ const WorkshopScreen = ({ onNavigate }: { onNavigate: (screen: Screen) => void }
                   </div>
                   <div className="text-right">
                     <h5 className="text-xs font-black text-white">تواصل ومتابعة عبر الفيسبوك (Facebook Page)</h5>
-                    <p className="text-[10px] text-indigo-400/80 font-bold mt-0.5">الصفحة الرسمية لمصانع وورش تصنيع البطاريات ومعارض التجهيزات للدواجن</p>
+                    <p className="text-[10px] text-indigo-400/80 font-bold mt-0.5">الصفحة الرسمية لمتابعة عروض تصنيع البطاريات ومعارض مستلزمات العنابر</p>
                   </div>
                 </div>
                 <div className="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 group-hover:translate-x-[-4px] transition-transform">
@@ -1842,6 +1842,42 @@ const INITIAL_STATE: AppState = {
   medDataOverrides: {}
 };
 
+/**
+ * دالة فيزيائية دقيقة لحساب الزيادة في الرطوبة النسبية بناءً على حجم الهواء والحرارة
+ * @param currentTempC درجة حرارة العنبر الحالية بالمئوية (مثال: 33)
+ * @param currentRH الرطوبة النسبية الحالية كنسبة مئوية (مثال: 50)
+ * @param moistureAddedMlPerHour كمية الماء المتبخرة من القطيع في الساعة (مل)
+ * @param roomVolumeCubicMeters حجم هواء العنبر بالمتر المكعب (الطول × العرض × الارتفاع)
+ * @returns الرطوبة النسبية الجديدة بعد ساعة (%)
+ */
+const calculateExactNewRH = (
+  currentTempC: number,
+  currentRH: number,
+  moistureAddedMlPerHour: number,
+  roomVolumeCubicMeters: number
+): number => {
+  if (roomVolumeCubicMeters <= 0) return currentRH;
+  const temp = currentTempC <= 0 ? 28 : currentTempC;
+
+  // 1. حساب أقصى كمية بخار ماء يمكن أن يحملها المتر المكعب عند هذه الحرارة (جرام/متر مكعب)
+  const saturationVaporPressure = 6.112 * Math.exp((17.67 * temp) / (temp + 243.5)); // hPa
+  const maxWaterPerCubicMeter = (2.16679 * saturationVaporPressure * 100) / (temp + 273.15); 
+
+  if (maxWaterPerCubicMeter <= 0) return currentRH;
+
+  // 2. حساب كمية الماء الحالية الموجودة فعلياً في هواء العنبر (بالمللتر)
+  const currentWaterInRoom = (currentRH / 100) * maxWaterPerCubicMeter * roomVolumeCubicMeters;
+
+  // 3. إضافة الماء الجديد الذي تبخر من الفراخ خلال ساعة
+  const newTotalWaterInRoom = currentWaterInRoom + moistureAddedMlPerHour;
+
+  // 4. تحويل الكمية الجديدة لنسبة مئوية (الرطوبة النسبية الجديدة)
+  const newRH = (newTotalWaterInRoom / (maxWaterPerCubicMeter * roomVolumeCubicMeters)) * 100;
+
+  // 5. السقف الفيزيائي (لا يمكن أن تتجاوز 100%)
+  return newRH > 100 ? 100 : parseFloat(newRH.toFixed(1));
+};
+
 export default function App() {
   const [isLoginLoading, setIsLoginLoading] = useState(false);
 
@@ -2429,6 +2465,8 @@ export default function App() {
   const [isNavVisible, setIsNavVisible] = useState(true);
   const [isWeightModalOpen, setIsWeightModalOpen] = useState(false);
   const [weightInput, setWeightInput] = useState('');
+  const [humidityTotalBirds, setHumidityTotalBirds] = useState('360');
+  const [humidityAvgWeight, setHumidityAvgWeight] = useState('180');
   const navTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // --- Day Navigation Logic ---
@@ -3764,6 +3802,84 @@ export default function App() {
   
   const totalBatteries = state.batteryGroups.reduce((acc, g) => acc + toNum(g.count), 0);
   const waterPerBattery = totalBatteries > 0 ? (dailyWaterTotalLiters / totalBatteries).toFixed(1) : dailyWaterTotalLiters;
+
+  const batteryWaterDistribution = useMemo(() => {
+    const currentAge = String(state.age);
+    const dayData = state.dailyBatteryGroupTierCounts?.[currentAge] || {};
+    const totalChicksNum = toNum(state.totalChicks);
+
+    const units: {
+      groupId: string;
+      groupName: string;
+      unitIndex: number;
+      unitName: string;
+      birdsCount: number;
+      waterLiters: number;
+      percentage: number;
+    }[] = [];
+
+    let totalBirdsAcrossAllBatteries = 0;
+    
+    (state.batteryGroups || []).forEach(group => {
+      const groupCount = toNum(group.count);
+      for (let i = 0; i < groupCount; i++) {
+        const bKey = `${group.id}_${i}`;
+        const tierCounts = dayData[bKey] || [];
+        const birdsInThisBattery = toNum(tierCounts.reduce((sum: number, c: any) => sum + toNum(c), 0));
+        totalBirdsAcrossAllBatteries += birdsInThisBattery;
+
+        units.push({
+          groupId: group.id,
+          groupName: group.name || 'مجموعة بطاريات',
+          unitIndex: i,
+          unitName: `${group.name || 'البطارية'} - وحدة ${i + 1}`,
+          birdsCount: birdsInThisBattery,
+          waterLiters: 0,
+          percentage: 0
+        });
+      }
+    });
+
+    if (totalBirdsAcrossAllBatteries === 0) {
+      const unitsCount = units.length;
+      if (unitsCount > 0) {
+        const equalBirds = Math.floor(totalChicksNum / unitsCount);
+        const remainder = totalChicksNum % unitsCount;
+        units.forEach((unit, idx) => {
+          unit.birdsCount = equalBirds + (idx < remainder ? 1 : 0);
+        });
+        totalBirdsAcrossAllBatteries = totalChicksNum;
+      }
+    }
+
+    if (totalBirdsAcrossAllBatteries > 0) {
+      units.forEach(unit => {
+        unit.percentage = (unit.birdsCount / totalBirdsAcrossAllBatteries) * 100;
+        unit.waterLiters = parseFloat(((unit.birdsCount / totalBirdsAcrossAllBatteries) * dailyWaterTotalLiters).toFixed(1));
+      });
+    } else {
+      const unitsCount = units.length;
+      if (unitsCount > 0) {
+        units.forEach(unit => {
+          unit.percentage = 100 / unitsCount;
+          unit.waterLiters = parseFloat((dailyWaterTotalLiters / unitsCount).toFixed(1));
+        });
+      }
+    }
+
+    return {
+      units,
+      totalBirdsAcrossAllBatteries
+    };
+  }, [state.batteryGroups, state.dailyBatteryGroupTierCounts, state.age, state.totalChicks, dailyWaterTotalLiters]);
+
+  const activeBatteriesCount = useMemo(() => {
+    return batteryWaterDistribution.units.filter(u => u.birdsCount > 0).length;
+  }, [batteryWaterDistribution]);
+
+  const waterPerActiveBattery = activeBatteriesCount > 0 
+    ? (dailyWaterTotalLiters / activeBatteriesCount).toFixed(1) 
+    : dailyWaterTotalLiters;
   
   const formatArabicTime = (date: Date, referenceDate?: Date) => {
     const h = date.getHours();
@@ -3786,6 +3902,19 @@ export default function App() {
     
     return `${displayH}:${m} ${period}${suffix}`;
   };
+
+  // Sync moisture calculator inputs with setup total chicks and dashboard weight
+  useEffect(() => {
+    if (state.totalChicks) {
+      setHumidityTotalBirds(String(state.totalChicks));
+    }
+  }, [state.totalChicks]);
+
+  useEffect(() => {
+    if (dailyStats?.weight) {
+      setHumidityAvgWeight(String(dailyStats.weight));
+    }
+  }, [dailyStats?.weight]);
 
   const getNextTime = (startTimeStr: string, currentMed: any, nextMed: any, isNextDay: boolean = false) => {
     if (!startTimeStr || !currentMed || !nextMed) return null;
@@ -4192,20 +4321,35 @@ export default function App() {
 
   const getLightingScheduleForAge = useCallback((age: number) => {
     let baseHours = 1;
-    let ageReason = "ساعة واحدة إظلام للتعرف على المكان.";
+    let ageReason = "ساعة واحدة إظلام.";
     
-    if (age >= 3 && age <= 7) {
-      baseHours = 2;
-      ageReason = "ساعتان إظلام لنمو الهيكل العظمي.";
-    } else if (age >= 8 && age <= 21) {
-      baseHours = 4;
-      ageReason = "4 ساعات إظلام لتقليل النفوق وتحفيز المناعة.";
-    } else if (age >= 22 && age <= 28) {
-      baseHours = 3;
-      ageReason = "تقليل الإظلام تدريجياً لزيادة استهلاك العلف.";
-    } else if (age >= 29) {
+    if (age >= 1 && age <= 3) {
+      baseHours = 0;
+      ageReason = "اليوم 1-3: إضاءة 24 ساعة (إظلام 0 ساعة).";
+    } else if (age >= 4 && age <= 6) {
       baseHours = 1;
-      ageReason = "ساعة واحدة إظلام لتسهيل مسك الطيور.";
+      ageReason = "اليوم 4-6: إضاءة 23 ساعة (إظلام ساعة واحدة).";
+    } else if (age >= 7 && age <= 15) {
+      baseHours = 4;
+      ageReason = "اليوم 7-15: إضاءة 20 ساعة (إظلام 4 ساعات).";
+    } else if (age >= 16 && age <= 28) {
+      baseHours = 6;
+      ageReason = "اليوم 16-28: إضاءة 18 ساعة (إظلام 6 ساعات).";
+    } else if (age === 29) {
+      baseHours = 4;
+      ageReason = "اليوم 29: إضاءة 20 ساعة (إظلام 4 ساعات).";
+    } else if (age === 30) {
+      baseHours = 3;
+      ageReason = "اليوم 30: إضاءة 21 ساعة (إظلام 3 ساعات).";
+    } else if (age === 31) {
+      baseHours = 2;
+      ageReason = "اليوم 31: إضاءة 22 ساعة (إظلام ساعتان).";
+    } else if (age >= 32 && age <= 34) {
+      baseHours = 1;
+      ageReason = "اليوم 32-34: إضاءة 23 ساعة (إظلام ساعة واحدة).";
+    } else {
+      baseHours = 1;
+      ageReason = "اليوم 35 فما فوق: إضاءة 23 ساعة (إظلام ساعة واحدة).";
     }
 
     const darknessHours = (age === toNum(state.age) && state.isCustomDarkness) ? toNum(state.darknessHours) : baseHours;
@@ -7751,6 +7895,48 @@ export default function App() {
                         </div>
                       )}
                     </div>
+
+                    {/* Broiler Lighting Program Alert Block */}
+                    <div className="bg-indigo-950/40 p-4 rounded-xl border border-indigo-500/20 text-right space-y-2.5 w-full mt-3" dir="rtl">
+                      <div className="flex items-center gap-2 justify-start text-indigo-400">
+                        <Info size={14} className="text-indigo-400 flex-shrink-0" />
+                        <span className="text-[11px] font-black tracking-wide uppercase">دليل برنامج الإظلام المعتمد</span>
+                      </div>
+                      <div className="grid grid-cols-1 gap-1 text-[10px] text-slate-300 leading-relaxed font-bold">
+                        <div className={cn("flex justify-between items-center px-2 py-1 rounded transition-colors", toNum(state.age) >= 1 && toNum(state.age) <= 3 ? "bg-indigo-500/20 text-white font-extrabold border border-indigo-500/30" : "opacity-75")}>
+                          <span>من اليوم الأول حتى اليوم الثالث:</span>
+                          <span className="bg-slate-950/60 px-2 py-0.5 rounded text-indigo-300">إضاءة 24 ساعة (إظلام 0 ساعة)</span>
+                        </div>
+                        <div className={cn("flex justify-between items-center px-2 py-1 rounded transition-colors", toNum(state.age) >= 4 && toNum(state.age) <= 6 ? "bg-indigo-500/20 text-white font-extrabold border border-indigo-500/30" : "opacity-75")}>
+                          <span>من اليوم الرابع حتى اليوم السابع:</span>
+                          <span className="bg-slate-950/60 px-2 py-0.5 rounded text-indigo-300">إضاءة 23 ساعة (إظلام ساعة واحدة)</span>
+                        </div>
+                        <div className={cn("flex justify-between items-center px-2 py-1 rounded transition-colors", toNum(state.age) >= 7 && toNum(state.age) <= 15 ? "bg-indigo-500/20 text-white font-extrabold border border-indigo-500/30" : "opacity-75")}>
+                          <span>من اليوم السابع حتى اليوم 15:</span>
+                          <span className="bg-slate-950/60 px-2 py-0.5 rounded text-indigo-300">إضاءة 20 ساعة (إظلام 4 ساعات)</span>
+                        </div>
+                        <div className={cn("flex justify-between items-center px-2 py-1 rounded transition-colors", toNum(state.age) >= 16 && toNum(state.age) <= 28 ? "bg-indigo-500/20 text-white font-extrabold border border-indigo-500/30" : "opacity-75")}>
+                          <span>من اليوم 16 حتى اليوم 28:</span>
+                          <span className="bg-slate-950/60 px-2 py-0.5 rounded text-indigo-300">إضاءة 18 ساعة (إظلام 6 ساعات)</span>
+                        </div>
+                        <div className={cn("flex justify-between items-center px-2 py-1 rounded transition-colors", toNum(state.age) === 29 ? "bg-indigo-500/20 text-white font-extrabold border border-indigo-500/30" : "opacity-75")}>
+                          <span>اليوم 29:</span>
+                          <span className="bg-slate-950/60 px-2 py-0.5 rounded text-indigo-300">إضاءة 20 ساعة (إظلام 4 ساعات)</span>
+                        </div>
+                        <div className={cn("flex justify-between items-center px-2 py-1 rounded transition-colors", toNum(state.age) === 30 ? "bg-indigo-500/20 text-white font-extrabold border border-indigo-500/30" : "opacity-75")}>
+                          <span>اليوم 30:</span>
+                          <span className="bg-slate-950/60 px-2 py-0.5 rounded text-indigo-300">إضاءة 21 ساعة (إظلام 3 ساعات)</span>
+                        </div>
+                        <div className={cn("flex justify-between items-center px-2 py-1 rounded transition-colors", toNum(state.age) === 31 ? "bg-indigo-500/20 text-white font-extrabold border border-indigo-500/30" : "opacity-75")}>
+                          <span>اليوم 31:</span>
+                          <span className="bg-slate-950/60 px-2 py-0.5 rounded text-indigo-300">إضاءة 22 ساعة (إظلام ساعتان)</span>
+                        </div>
+                        <div className={cn("flex justify-between items-center px-2 py-1 rounded transition-colors", toNum(state.age) >= 32 && toNum(state.age) <= 34 ? "bg-indigo-500/20 text-white font-extrabold border border-indigo-500/30" : "opacity-75")}>
+                          <span>من اليوم 32 حتى اليوم 34:</span>
+                          <span className="bg-slate-950/60 px-2 py-0.5 rounded text-indigo-300">إضاءة 23 ساعة (إظلام ساعة واحدة)</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -8049,6 +8235,42 @@ export default function App() {
                 </div>
               )}
 
+              {!activeBatteryGroup && totalBatteries >= 2 && (
+                <div className="bg-slate-900/60 border border-white/5 p-6 rounded-[32px] space-y-4">
+                  <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-cyan-500/10 rounded-xl flex items-center justify-center text-cyan-400">
+                        <Droplets size={22} className="animate-pulse" />
+                      </div>
+                      <div className="text-right">
+                        <h4 className="font-black text-white text-base">توزيع مياه الشرب اليومية على البطاريات 💧</h4>
+                        <p className="text-[10px] text-slate-400 font-bold mt-1">توزيع ذكي وتلقائي للمياه بحسب العدد الفعلي للكتاكيت في كل بطارية لضمان دقة الرطوبة والري</p>
+                      </div>
+                    </div>
+                    <div className="bg-slate-950 px-3 py-1.5 rounded-xl border border-white/5 text-[11px] font-mono font-bold text-slate-300">
+                      إجمالي المياه: <span className="text-cyan-400 font-black">{dailyWaterTotalLiters} لتر</span>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    {batteryWaterDistribution.units.map((unit, idx) => (
+                      <div key={idx} className="bg-slate-950/40 p-4 rounded-2xl border border-white/5 flex flex-col justify-between gap-3">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-black text-white">{unit.unitName}</span>
+                          <span className="text-[10px] font-bold text-slate-400">({unit.birdsCount} طائر)</span>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <div className="flex-1 h-2 bg-slate-950 rounded-full overflow-hidden border border-white/5">
+                            <div className="h-full bg-cyan-500 rounded-full transition-all duration-500" style={{ width: `${unit.percentage}%` }} />
+                          </div>
+                          <span className="text-xs font-black text-cyan-400 font-mono tracking-tight shrink-0">{unit.waterLiters} لتر ({(unit.percentage || 0).toFixed(1)}%)</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* LEVEL 2: Batteries Grid in Group */}
               {activeBatteryGroup && activeBatteryIdx === null && (
                 <div className="space-y-6">
@@ -8112,11 +8334,16 @@ export default function App() {
                                 </span>
                               </div>
                               {sum > 0 && (
-                                <div className="w-full h-1 bg-slate-950 rounded-full mt-1 overflow-hidden">
-                                  <div 
-                                    className={cn("h-full", sum > capacity ? "bg-red-500" : "bg-purple-500")} 
-                                    style={{ width: `${util}%` }} 
-                                  />
+                                <div className="w-full flex flex-col items-center gap-1.5 mt-1">
+                                  <div className="w-full h-1 bg-slate-950 rounded-full overflow-hidden">
+                                    <div 
+                                      className={cn("h-full", sum > capacity ? "bg-red-500" : "bg-purple-500")} 
+                                      style={{ width: `${util}%` }} 
+                                    />
+                                  </div>
+                                  <span className="text-[10px] font-black text-cyan-400 flex items-center gap-1 font-mono">
+                                    💧 {((sum / (batteryWaterDistribution.totalBirdsAcrossAllBatteries || 1)) * dailyWaterTotalLiters).toFixed(1)} لتر
+                                  </span>
                                 </div>
                               )}
                             </motion.button>
@@ -8501,13 +8728,26 @@ export default function App() {
                   برنامج الأدوية
                 </h2>
                 <div className="flex items-center gap-2 sm:gap-4">
-                  <div className="flex flex-col items-end gap-2">
-                  <div className="text-[12px] font-black text-white bg-blue-600 px-4 py-2.5 rounded-2xl shadow-lg border border-white/10 flex items-center gap-2">
-                    <Droplets size={16} />
-                    إجمالي المياه {dailyWaterTotalLiters} لتر - {waterPerBattery} لتر/بطارية
+                  <div className="flex flex-col items-end gap-1">
+                    <div className="text-[12px] font-black text-white bg-blue-600 px-4 py-2.5 rounded-2xl shadow-lg border border-white/10 flex items-center gap-2">
+                      <Droplets size={16} />
+                      إجمالي المياه {dailyWaterTotalLiters} لتر
+                    </div>
+                    {activeBatteriesCount >= 2 && (
+                      <div className="flex flex-wrap items-center justify-end gap-1 text-[10px] font-bold text-slate-400 bg-slate-900/40 px-2.5 py-1 rounded-xl border border-white/5 mt-1">
+                        <span className="text-slate-500 text-[9px] ml-1">توزيع المياه الفعلي:</span>
+                        {batteryWaterDistribution.units.filter(u => u.birdsCount > 0).map((unit, idx) => {
+                          const name = unit.unitName.includes(' - ') ? unit.unitName.split(' - ')[1] : unit.unitName;
+                          return (
+                            <span key={idx} className="bg-slate-950 px-1.5 py-0.5 rounded text-cyan-400 font-black font-mono">
+                              {name}: {unit.waterLiters} لتر
+                            </span>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
                 </div>
-              </div>
             </header>
 
               <div className="px-0 mb-4 space-y-4">
@@ -9213,7 +9453,31 @@ export default function App() {
                                            )}
                                            <div className="flex items-center justify-between px-2">
                                               <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">إجمالي المياه:</span>
-                                              <span className="text-xs font-black text-white">{med.calculatedWater} لتر/بطارية</span>
+                                               <span className="text-xs font-black text-white">
+                                                 {med.calculatedWater} لتر
+                                               </span>
+                                            </div>
+                                            {activeBatteriesCount >= 2 && (
+                                              <div className="flex flex-col gap-1 px-2 pt-1.5 border-t border-white/5 mt-1">
+                                                <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest text-right block mb-1">المياه لكل بطارية (حسب عدد الطيور):</span>
+                                                <div className="grid grid-cols-2 gap-1.5">
+                                                  {batteryWaterDistribution.units.map((unit, uIdx) => {
+                                                    const unitMedWater = ((unit.birdsCount / (batteryWaterDistribution.totalBirdsAcrossAllBatteries || 1)) * med.calculatedWater).toFixed(1);
+                                                    return (
+                                                      <div key={uIdx} className="bg-slate-950/40 px-2.5 py-1.5 rounded-lg border border-white/5 flex items-center justify-between text-[10px]">
+                                                        <span className="text-slate-400 font-bold">{unit.unitName.includes(' - ') ? unit.unitName.split(' - ')[1] : unit.unitName}</span>
+                                                        <span className="text-cyan-400 font-black font-mono">{unitMedWater} لتر</span>
+                                                      </div>
+                                                    );
+                                                  })}
+                                                </div>
+                                              </div>
+                                            )}
+                                            <div className="hidden">
+                                               <span className="hidden"></span>
+                                              <span className="text-xs font-black text-white">
+                                                {med.calculatedWater} لتر
+                                              </span>
                                            </div>
                                            {toNum(med.doseValue) > 0 && (
                                               <div className="flex items-center justify-between px-2 pt-1 border-t border-white/5 opacity-60">
@@ -9496,7 +9760,31 @@ export default function App() {
                                         )}
                                         <div className="flex items-center justify-between px-2">
                                           <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest">إجمالي المياه:</span>
-                                          <span className="text-xs font-black text-white">{med.calculatedWater} لتر/بطارية</span>
+                                          <span className="text-xs font-black text-white">
+                                            {med.calculatedWater} لتر
+                                          </span>
+                                        </div>
+                                        {activeBatteriesCount >= 2 && (
+                                          <div className="flex flex-col gap-1 px-2 pt-1.5 border-t border-white/5 mt-1">
+                                            <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest text-right block mb-1">المياه لكل بطارية (حسب عدد الطيور):</span>
+                                            <div className="grid grid-cols-2 gap-1.5">
+                                              {batteryWaterDistribution.units.map((unit, uIdx) => {
+                                                const unitMedWater = ((unit.birdsCount / (batteryWaterDistribution.totalBirdsAcrossAllBatteries || 1)) * med.calculatedWater).toFixed(1);
+                                                return (
+                                                  <div key={uIdx} className="bg-slate-950/40 px-2.5 py-1.5 rounded-lg border border-white/5 flex items-center justify-between text-[10px]">
+                                                    <span className="text-slate-400 font-bold">{unit.unitName.includes(' - ') ? unit.unitName.split(' - ')[1] : unit.unitName}</span>
+                                                    <span className="text-cyan-400 font-black font-mono">{unitMedWater} لتر</span>
+                                                  </div>
+                                                );
+                                              })}
+                                            </div>
+                                          </div>
+                                        )}
+                                        <div className="hidden">
+                                          <span className="hidden"></span>
+                                          <span className="text-xs font-black text-white">
+                                            {med.calculatedWater} لتر
+                                          </span>
                                         </div>
                                       </div>
                                     )}
@@ -12005,7 +12293,7 @@ export default function App() {
               </div>
 
               {/* SECONDARY TOOLS SECTION */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* COOLING PADS EFFICIENCY */}
                 <Card className="bg-slate-900 border-white/5 border-b-4 border-b-blue-600/50 p-6 flex flex-col group">
                   <div className="flex items-center justify-between mb-8">
@@ -12224,6 +12512,328 @@ export default function App() {
                               </button>
                            </div>
                         </div>
+                      </div>
+                    </Card>
+
+                    {/* POULTRY HOUSE MOISTURE INDICATOR / SMART HUMIDITY MANAGEMENT */}
+                    <Card className="bg-slate-900 border-white/5 border-b-4 border-b-indigo-500/50 p-6 flex flex-col group relative overflow-hidden">
+                      <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 blur-[30px] -z-10 group-hover:bg-indigo-500/10 transition-all" />
+                      
+                      <div className="flex items-center justify-between mb-6 border-b border-white/5 pb-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 bg-indigo-500/10 rounded-xl flex items-center justify-center text-indigo-400 shadow-inner ring-1 ring-white/5">
+                            <Droplet size={20} className="animate-pulse" />
+                          </div>
+                          <div>
+                            <h4 className="font-black text-lg text-white">إدارة رطوبة العنبر ذكياً 💧</h4>
+                            <p className="text-[9px] text-slate-500 font-bold mt-1">تحليل ذكي يربط قراءة الحساس الحالي بكتالوج عمر الطيور</p>
+                          </div>
+                        </div>
+
+                        {/* Sync Button */}
+                        <button 
+                          onClick={() => {
+                            setHumidityTotalBirds(String(finances.birdsAlive || state.totalChicks || 360));
+                            setHumidityAvgWeight(String(dailyStats.weight || 180));
+                          }}
+                          className="px-2.5 py-1 text-[9px] font-black tracking-wider text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 rounded-lg hover:bg-indigo-500 hover:text-white transition-all active:scale-95 flex items-center gap-1 shrink-0"
+                          title="مزامنة مع قطيع اليوم"
+                        >
+                          <RefreshCw size={10} className="animate-spin-slow" />
+                          مزامنة القطيع
+                        </button>
+                      </div>
+
+                      <div className="space-y-5 flex-1">
+                        
+                        {/* INPUTS PANEL */}
+                        <div className="bg-slate-950/40 p-4 rounded-2xl border border-white/5 space-y-4">
+                          <h5 className="text-[11px] font-bold text-slate-400 text-right pr-1">بيانات العنبر ومؤشرات الحساسات الحالية</h5>
+                          
+                          {/* 1. Sensor Humidity (RH) Input with plus/minus */}
+                          <div className="space-y-1.5">
+                            <label className="text-[10px] font-semibold text-slate-400 block text-right pr-1">
+                              قراءة رطوبة الحساس الحالية (%) - شاملة الكتاكيت:
+                            </label>
+                            <div className="flex items-center bg-slate-950 p-1 rounded-xl border border-white/10 group focus-within:ring-2 focus-within:ring-cyan-500/20 transition-all">
+                              <button 
+                                onClick={() => {
+                                  const currentVal = toNum(state.dailyHumidity?.[currentAgeStr] ?? state.currentHumidity);
+                                  const newVal = Math.max(0, currentVal - 1).toFixed(0);
+                                  setState(prev => ({ 
+                                    ...prev, 
+                                    dailyHumidity: { ...prev.dailyHumidity, [currentAgeStr]: newVal },
+                                    currentHumidity: newVal
+                                  }));
+                                }}
+                                className="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-400 hover:bg-cyan-500 hover:text-white transition-all active:scale-95 flex items-center justify-center shadow-sm shrink-0"
+                              >
+                                <Minus size={14} strokeWidth={3} />
+                              </button>
+                              <input 
+                                type="text" 
+                                inputMode="decimal" 
+                                value={state.dailyHumidity?.[currentAgeStr] ?? state.currentHumidity} 
+                                onChange={e => { 
+                                  const val = e.target.value; 
+                                  if (val === '' || /^\d*\.?\d*$/.test(val)) {
+                                    setState(prev => ({ 
+                                      ...prev, 
+                                      dailyHumidity: { ...prev.dailyHumidity, [currentAgeStr]: val },
+                                      currentHumidity: val
+                                    }));
+                                  }
+                                }} 
+                                className="bg-transparent text-center font-black text-white text-lg flex-1 outline-none font-mono min-w-0" 
+                              />
+                              <button 
+                                onClick={() => {
+                                  const currentVal = toNum(state.dailyHumidity?.[currentAgeStr] ?? state.currentHumidity);
+                                  const newVal = Math.min(100, currentVal + 1).toFixed(0);
+                                  setState(prev => ({ 
+                                    ...prev, 
+                                    dailyHumidity: { ...prev.dailyHumidity, [currentAgeStr]: newVal },
+                                    currentHumidity: newVal
+                                  }));
+                                }}
+                                className="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-400 hover:bg-cyan-500 hover:text-white transition-all active:scale-95 flex items-center justify-center shadow-sm shrink-0"
+                              >
+                                <Plus size={14} strokeWidth={3} />
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* 2. Flock Age & Rate Rows */}
+                          <div className="grid grid-cols-2 gap-3">
+                            {/* Flock Age Input */}
+                            <div className="space-y-1.5">
+                              <label className="text-[10px] font-semibold text-slate-400 block text-right pr-1">عمر القطيع (يوم):</label>
+                              <div className="flex items-center bg-slate-950 p-1 rounded-xl border border-white/10 group focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
+                                <button 
+                                  onClick={() => {
+                                    const currentAge = toNum(state.age);
+                                    const newAge = Math.max(1, currentAge - 1);
+                                    setState(prev => ({ ...prev, age: newAge }));
+                                  }}
+                                  className="w-7 h-7 rounded-md bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500 hover:text-white transition-all active:scale-95 flex items-center justify-center shadow-sm shrink-0"
+                                >
+                                  <Minus size={12} strokeWidth={3} />
+                                </button>
+                                <input 
+                                  type="text" 
+                                  inputMode="numeric" 
+                                  value={state.age}
+                                  onChange={e => {
+                                    const val = e.target.value;
+                                    if (val === '' || /^\d*$/.test(val)) {
+                                      setState(prev => ({ ...prev, age: parseInt(val, 10) || 1 }));
+                                    }
+                                  }}
+                                  className="bg-transparent text-center font-bold text-white text-sm flex-1 outline-none font-mono min-w-0" 
+                                />
+                                <button 
+                                  onClick={() => {
+                                    const currentAge = toNum(state.age);
+                                    const newAge = currentAge + 1;
+                                    setState(prev => ({ ...prev, age: newAge }));
+                                  }}
+                                  className="w-7 h-7 rounded-md bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500 hover:text-white transition-all active:scale-95 flex items-center justify-center shadow-sm shrink-0"
+                                >
+                                  <Plus size={12} strokeWidth={3} />
+                                </button>
+                              </div>
+                            </div>
+
+                            {/* Average Weight */}
+                            <div className="space-y-1.5">
+                              <label className="text-[10px] font-semibold text-slate-400 block text-right pr-1">وزن الطائر (جرام):</label>
+                              <div className="flex items-center bg-slate-950 p-1 rounded-xl border border-white/10 group focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
+                                <button 
+                                  onClick={() => setHumidityAvgWeight(prev => String(Math.max(10, (parseFloat(prev) || 0) - 5)))}
+                                  className="w-7 h-7 rounded-md bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500 hover:text-white transition-all active:scale-95 flex items-center justify-center shadow-sm shrink-0"
+                                >
+                                  <Minus size={12} strokeWidth={3} />
+                                </button>
+                                <input 
+                                  type="text" 
+                                  inputMode="decimal" 
+                                  value={humidityAvgWeight}
+                                  onChange={e => {
+                                    const val = e.target.value;
+                                    if (val === '' || /^\d*\.?\d*$/.test(val)) setHumidityAvgWeight(val);
+                                  }}
+                                  className="bg-transparent text-center font-bold text-white text-sm flex-1 outline-none font-mono min-w-0" 
+                                />
+                                <button 
+                                  onClick={() => setHumidityAvgWeight(prev => String((parseFloat(prev) || 0) + 5))}
+                                  className="w-7 h-7 rounded-md bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500 hover:text-white transition-all active:scale-95 flex items-center justify-center shadow-sm shrink-0"
+                                >
+                                  <Plus size={12} strokeWidth={3} />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Birds total */}
+                          <div className="space-y-1.5">
+                            <label className="text-[10px] font-semibold text-slate-400 block text-right pr-1">عدد الطيور بالكامل:</label>
+                            <div className="flex items-center bg-slate-950 p-1 rounded-xl border border-white/10 group focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
+                              <button 
+                                onClick={() => setHumidityTotalBirds(prev => String(Math.max(0, (parseInt(prev, 10) || 0) - 100)))}
+                                className="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500 hover:text-white transition-all active:scale-95 flex items-center justify-center shadow-sm shrink-0"
+                              >
+                                <Minus size={14} strokeWidth={3} />
+                              </button>
+                              <input 
+                                type="text" 
+                                inputMode="numeric" 
+                                value={humidityTotalBirds}
+                                onChange={e => {
+                                  const val = e.target.value;
+                                  if (val === '' || /^\d*$/.test(val)) setHumidityTotalBirds(val);
+                                }}
+                                className="bg-transparent text-center font-black text-white text-md flex-1 outline-none font-mono min-w-0" 
+                              />
+                              <button 
+                                onClick={() => setHumidityTotalBirds(prev => String((parseInt(prev, 10) || 0) + 100))}
+                                className="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500 hover:text-white transition-all active:scale-95 flex items-center justify-center shadow-sm shrink-0"
+                              >
+                                <Plus size={14} strokeWidth={3} />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Interactive Analysis Outcomes */}
+                        {(() => {
+                          const birdsCountNum = parseInt(humidityTotalBirds, 10) || 0;
+                          const avgWeightNum = parseFloat(humidityAvgWeight) || 0;
+                          
+                          let moisturePerBirdPerHour = 0;
+                          if (avgWeightNum <= 100) {
+                            moisturePerBirdPerHour = 1.39;
+                          } else if (avgWeightNum >= 2000) {
+                            moisturePerBirdPerHour = 8.5;
+                          } else {
+                            const weightFactor = (avgWeightNum - 100) / (2000 - 100);
+                            moisturePerBirdPerHour = 1.39 + weightFactor * (8.5 - 1.39);
+                          }
+                          
+                          const totalMoisturePerHour = Math.round(moisturePerBirdPerHour * birdsCountNum);
+                          const totalMoisturePerDayInLiters = ((totalMoisturePerHour * 24) / 1000).toFixed(1);
+                          
+                          const barnL = toNum(state.barnLength || 100);
+                          const barnW = toNum(state.barnWidth || 12);
+                          const barnH = toNum(state.barnHeight || 3);
+                          const barnVol = barnL * barnW * barnH;
+                          const currentTempC = toNum(state.dailyInternalTemp?.[currentAgeStr] ?? state.internalTemp) || 28;
+                          const addedRHPercent = calculateExactNewRH(currentTempC, 0, totalMoisturePerHour, barnVol);
+
+                          // Interactive Target Determination by Age Map requested:
+                          const getTargetHumidityByAge = (age: number): number => {
+                            if (age <= 7) return 65;  // الأسبوع الأول
+                            if (age <= 14) return 60; // الأسبوع الثاني
+                            if (age <= 21) return 55; // الأسبوع الثالث
+                            return 50;                // الأعمار الكبيرة
+                          };
+
+                          const rhCurrentNum = toNum(state.dailyHumidity?.[currentAgeStr] ?? state.currentHumidity);
+                          const ageNum = toNum(state.age) || 1;
+                          const targetRH = getTargetHumidityByAge(ageNum);
+                          const rhDifference = parseFloat((rhCurrentNum - targetRH).toFixed(1));
+
+                          let statusMessage = '';
+                          let statusColorClass = '';
+                          let statusBorderClass = '';
+                          let statusTextClass = '';
+
+                          if (rhDifference > 5) {
+                            statusMessage = `⚠️ الرطوبة مرتفعة عن المطلوب بـ ${rhDifference}% (خطر كتمة)`;
+                            statusColorClass = 'bg-red-500/10';
+                            statusBorderClass = 'border-red-500/20';
+                            statusTextClass = 'text-red-400';
+                          } else if (rhDifference < -5) {
+                            statusMessage = `⚠️ الجو جاف؛ أقل من المطلوب بـ ${Math.abs(rhDifference)}% (خطر جفاف)`;
+                            statusColorClass = 'bg-amber-500/10';
+                            statusBorderClass = 'border-amber-500/20';
+                            statusTextClass = 'text-amber-400';
+                          } else {
+                            statusMessage = '🟢 الرطوبة في النطاق المثالي لعمر الطيور';
+                            statusColorClass = 'bg-emerald-500/10';
+                            statusBorderClass = 'border-emerald-500/20';
+                            statusTextClass = 'text-emerald-400';
+                          }
+
+                          // Future Danger Forecast:
+                          const predictedRHAfterOneHour = Math.min(100, parseFloat((rhCurrentNum + addedRHPercent).toFixed(1)));
+
+                          return (
+                            <div className="space-y-4">
+                              
+                              {/* REALTIME EVALUATION CARD */}
+                              <div className={cn("p-4 rounded-xl border text-right space-y-2", statusColorClass, statusBorderClass)}>
+                                <p className={cn("text-xs font-black", statusTextClass)}>{statusMessage}</p>
+                                <div className="flex items-center justify-between border-t border-white/5 pt-2 text-[11px] text-slate-400">
+                                  <span>الرطوبة الحالية: <strong className="text-white font-mono">{rhCurrentNum}%</strong></span>
+                                  <span>المستهدفة لعمر {ageNum} أيام: <strong className="text-white font-mono">{targetRH}%</strong></span>
+                                </div>
+                              </div>
+
+                              {/* DANGER FORECAST CARD */}
+                              <div className="p-4 bg-red-950/20 border border-red-500/10 rounded-2xl text-right space-y-3">
+                                <div className="flex items-center gap-2 text-red-400 font-bold text-xs">
+                                  <AlertTriangle size={14} />
+                                  <span>⚠️ سيناريو الخطر (إذا توقفت التهوية)</span>
+                                </div>
+                                <p className="text-[11px] text-slate-400 leading-relaxed">
+                                  القطيع يفرز رطوبة بمعدل <strong className="text-white font-mono font-black">{addedRHPercent.toFixed(1)}%</strong> في الساعة.
+                                </p>
+                                <div className="h-[1px] bg-white/5" />
+                                <div className="flex items-center justify-between">
+                                  <span className="text-[10px] text-slate-500 font-bold">الرطوبة المتوقعة بعد ساعة بدون شفاط:</span>
+                                  <span className={cn(
+                                    "text-lg font-black px-2.5 py-1 rounded-lg font-mono",
+                                    predictedRHAfterOneHour >= 75 ? "bg-red-500/0 text-red-400 border border-red-500/20 animate-pulse" : "bg-emerald-500/10 text-emerald-400"
+                                  )}>
+                                    {predictedRHAfterOneHour.toFixed(1)}%
+                                  </span>
+                                </div>
+                                {predictedRHAfterOneHour >= 95 && (
+                                  <div className="p-2.5 bg-red-500/10 border border-red-500/20 rounded-lg text-[10px] text-red-400 font-bold leading-relaxed text-right">
+                                    💥 تنبيه: سيحدث تشبع كامل (100%) وتبدأ المياه بالتكثف على الجدران وتغريق الفرشة!
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* METRIC FACTOR WRAPPER */}
+                              <div className="grid grid-cols-2 gap-2 pt-2 border-t border-white/5">
+                                <div className="p-2.5 bg-slate-950 rounded-xl border border-white/5 text-center">
+                                  <p className="text-[9px] text-slate-500 font-semibold uppercase">الزيادة في الساعة (فيزيائية)</p>
+                                  <p className="text-sm font-mono font-black text-emerald-400">+{addedRHPercent.toFixed(1)}%</p>
+                                </div>
+                                <div className="p-2.5 bg-slate-950 rounded-xl border border-white/5 text-center">
+                                  <p className="text-[9px] text-slate-500 font-semibold uppercase">معدل التبخر الكلي</p>
+                                  <p className="text-sm font-mono font-black text-indigo-400">{(totalMoisturePerHour / 1000).toFixed(2)} لتر/س</p>
+                                </div>
+                              </div>
+
+                              <div className="w-full bg-slate-950/30 p-3 rounded-xl border border-white/5 flex items-center justify-between text-[11px] text-slate-400">
+                                <div className="flex items-center gap-1.5">
+                                  <span className="font-bold">حجم الهواء:</span>
+                                  <span className="font-mono text-slate-300">{barnVol.toLocaleString()} م³</span>
+                                </div>
+                                <div className="flex items-center gap-1.5">
+                                  <span className="font-bold">الإنتاج اليومي:</span>
+                                  <span className="font-mono text-indigo-400">{totalMoisturePerDayInLiters} لتر</span>
+                                </div>
+                              </div>
+
+                              <p className="text-[9px] text-slate-500 font-bold leading-relaxed text-right">
+                                * يستند الموديل للحرارة الحالية ({currentTempC}°م). هذه النسبة تعبر عن مقدار الرطوبة المضافة إلى هواء العنبر كل ساعة (بدون تهوية). يجب الالتزام بحد الشفاطات الأدنى باستمرار لتلافي تجمع الرطوبة.
+                              </p>
+                            </div>
+                          );
+                        })()}
                       </div>
                     </Card>
                   </div>
